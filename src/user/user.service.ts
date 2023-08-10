@@ -41,7 +41,7 @@ export class UserService {
   }
 
   remove(id: string) {
-    return this.repository.delete({ id });
+    return this.repository.softDelete({ id });
   }
 
   async findByEmail(email: string): Promise<User> {

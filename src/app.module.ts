@@ -4,6 +4,10 @@ import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { BooksModule } from './books/books.module';
+import { Book } from './books/entities/book.entity';
+import { PublishersModule } from './publishers/publishers.module';
+import { Publisher } from './publishers/entities/publisher.entity';
 
 @Module({
   imports: [
@@ -15,12 +19,14 @@ import { AuthModule } from './auth/auth.module';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User],
+      entities: [User, Book, Publisher],
       synchronize: true,
-      logging: true,
+      // logging: true,
     }),
     UserModule,
     AuthModule,
+    BooksModule,
+    PublishersModule,
   ],
   controllers: [],
   providers: [],
