@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsString } from 'class-validator';
+import { Keyword } from 'src/keywords/entities/keyword.entity';
 import { Publisher } from 'src/publishers/entities/publisher.entity';
 export class CreateBookDto {
   @IsString()
@@ -34,4 +35,7 @@ export class CreateBookDto {
 
   @ApiProperty({ example: { id: '3e28d06e-ff8b-44d6-9a44-0540ac44477b' } })
   readonly publisher: Publisher;
+
+  @ApiProperty({ example: [{ id: '3e28d06e-ff8b-44d6-9a44-0540ac44477b' }] })
+  readonly keywords: Keyword[];
 }

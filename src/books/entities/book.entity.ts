@@ -1,10 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Keyword } from 'src/keywords/entities/keyword.entity';
 import { Publisher } from 'src/publishers/entities/publisher.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -38,6 +41,14 @@ export class Book {
   @Column()
   image_url: string;
 
+  @ApiProperty({ example: { id: 1 } })
+  @ManyToOne(() => Publisher, (publisher: Publisher) => publisher.books)
+  publisher: Publisher;
+
+  @ManyToMany(() => Keyword, (keyword: Keyword) => keyword.books)
+  @JoinTable()
+  keywords: Keyword[];
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -46,8 +57,4 @@ export class Book {
 
   @DeleteDateColumn()
   deletedAt: Date;
-
-  @ApiProperty({ example: { id: 1 } })
-  @ManyToOne(() => Publisher, (publisher: Publisher) => publisher.books)
-  publisher: Publisher;
 }

@@ -17,19 +17,22 @@ export class BooksService {
 
   async findAll(): Promise<Book[]> {
     return this.repository.find({
-      relations: ['publisher'],
+      relations: ['publisher', 'keywords'],
     });
   }
 
   async findOne(id: string): Promise<Book> {
     return this.repository.findOne({
       where: { id },
-      relations: ['publisher'],
+      relations: ['publisher', 'keywords'],
     });
   }
 
   async update(id: string, updateBookDto: UpdateBookDto) {
-    return this.repository.update(id, updateBookDto);
+    const toUpdate = await this.repository.findOne({
+      where: { id },
+    });
+    return this.repository.save(Object.assign(toUpdate, updateBookDto));
   }
 
   async remove(id: string) {

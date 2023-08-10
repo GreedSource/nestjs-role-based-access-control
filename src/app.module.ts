@@ -8,6 +8,8 @@ import { BooksModule } from './books/books.module';
 import { Book } from './books/entities/book.entity';
 import { PublishersModule } from './publishers/publishers.module';
 import { Publisher } from './publishers/entities/publisher.entity';
+import { KeywordsModule } from './keywords/keywords.module';
+import { Keyword } from './keywords/entities/keyword.entity';
 
 @Module({
   imports: [
@@ -19,7 +21,7 @@ import { Publisher } from './publishers/entities/publisher.entity';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User, Book, Publisher],
+      entities: [User, Book, Publisher, Keyword],
       synchronize: true,
       // logging: true,
     }),
@@ -27,6 +29,7 @@ import { Publisher } from './publishers/entities/publisher.entity';
     AuthModule,
     BooksModule,
     PublishersModule,
+    KeywordsModule,
   ],
   controllers: [],
   providers: [],
