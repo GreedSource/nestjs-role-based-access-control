@@ -11,8 +11,8 @@ import {
   ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { PublishersService } from './publishers.service';
-import { CreatePublisherDto } from './dto/create-publisher.dto';
-import { UpdatePublisherDto } from './dto/update-publisher.dto';
+import { CreatePublisherDto } from '@dto/publishers/create-publisher.dto';
+import { UpdatePublisherDto } from '@dto/publishers/update-publisher.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '@guards/jwt-auth.guard';
 

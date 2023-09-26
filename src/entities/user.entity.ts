@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Role } from 'src/common/enum/role.enum';
+import { Role } from '@enum/role.enum';
 import {
   Column,
   Entity,
@@ -50,6 +50,11 @@ export class User {
     nullable: true,
   })
   profilePic_format: string;
+
+  @Column({
+    nullable: true,
+  })
+  profilePic_publicId: string;
 
   @CreateDateColumn()
   createdAt: Date;

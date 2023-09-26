@@ -6,7 +6,7 @@ import {
   IsOptional,
   IsStrongPassword,
 } from 'class-validator';
-import { Role } from '@common/enum/role.enum';
+import { Role } from '@enum/role.enum';
 export class CreateUserDto {
   @ApiProperty({
     example: 'John Doe',
@@ -38,8 +38,4 @@ export class CreateUserDto {
   @ApiProperty({ type: 'string', format: 'binary', required: false })
   @IsOptional()
   readonly image?: Express.Multer.File;
-
-  profilePic?: string;
-  profilePic_format?: string;
-  profilePic_size?: number;
 }

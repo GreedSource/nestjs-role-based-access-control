@@ -19,9 +19,13 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@common/*": ["src/common/*"],
+      "@decorators/*": ["src/decorators/*"],
+      "@dto/*": ["src/dto/*"],
       "@entities/*": ["src/entities/*"],
+      "@enum/*": ["src/enum/*"],
       "@guards/*": ["src/guards/*"],
-      "@modules/*": ["src/modules/*"]
+      "@modules/*": ["src/modules/*"],
+      "@utils/*": ["src/utils/*"]
     }
   }
 }

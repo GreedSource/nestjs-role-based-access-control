@@ -12,8 +12,8 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { BooksService } from './books.service';
-import { CreateBookDto } from './dto/create-book.dto';
-import { UpdateBookDto } from './dto/update-book.dto';
+import { CreateBookDto } from '@dto/books/create-book.dto';
+import { UpdateBookDto } from '@dto/books/update-book.dto';
 import { JwtGuard } from '@guards/jwt-auth.guard';
 
 @Controller('books')
