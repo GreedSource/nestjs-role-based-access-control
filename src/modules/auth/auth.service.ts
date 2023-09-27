@@ -16,7 +16,6 @@ export class AuthService {
       const { password, ...payload } = user;
       return payload;
     }
-    return null;
   }
 
   async login(user: User) {

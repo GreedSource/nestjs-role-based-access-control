@@ -1,3 +1,4 @@
+import { User } from '@entities/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsEmail } from 'class-validator';
 export class ValidateUserDto {
@@ -10,4 +11,6 @@ export class ValidateUserDto {
     example: 'Abcde1!!!!',
   })
   readonly password: string;
+
+  readonly createdBy: User;
 }
