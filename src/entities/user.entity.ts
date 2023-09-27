@@ -84,7 +84,7 @@ export class User {
     if (this.password)
       this.password = await bcrypt.hash(
         this.password,
-        Number(process.env.SALT),
+        Number(process.env.BCRYPT_SALT),
       );
   }
 }
