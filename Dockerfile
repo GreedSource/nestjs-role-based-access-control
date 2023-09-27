@@ -1,17 +1,3 @@
-FROM node:20.5-alpine3.17
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-
-RUN npm install glob rimraf
-
-RUN npm install --only=development
-
-COPY . .
-
-RUN npm run build
-
 FROM node:20.5-alpine3.17 as production
 
 # Create app directory

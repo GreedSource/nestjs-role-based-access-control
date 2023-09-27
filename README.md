@@ -44,11 +44,16 @@ $ yarn run start:dev
 # production mode
 $ yarn run start:prod
 
-# Dockers create image
-$ docker build -t [image-name] .
+```
 
-#Dockers create container
-$ docker run --name [container-name] -d -p [EXTERNAL-PORT]:[INTERNAL-PORT] -e "[ENVIROMENT=VALUE]" [image-name]
+## Run Dockers
+
+```bash
+# docker create image
+$ docker-compose build
+
+# docker run image
+$ docker-compose up -d
 ```
 
 ## Test
