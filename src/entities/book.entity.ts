@@ -12,6 +12,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from './user.entity';
 
 export type BookDocument = Book & Document;
 
@@ -41,13 +42,21 @@ export class Book {
   @Column()
   image_url: string;
 
-  @ApiProperty({ example: { id: 1 } })
-  @ManyToOne(() => Publisher, (publisher: Publisher) => publisher.books)
+  @ManyToOne(() => Publisher, (publisher: Publisher) => publisher.books, {
+    eager: true,
+  })
   publisher: Publisher;
 
-  @ManyToMany(() => Keyword, (keyword: Keyword) => keyword.books)
+  @ManyToMany(() => Keyword, (keyword: Keyword) => keyword.books, {
+    eager: true,
+  })
   @JoinTable()
   keywords: Keyword[];
+
+  @ManyToOne(() => User, (user: User) => user.books, {
+    eager: true,
+  })
+  createdBy: User;
 
   @CreateDateColumn()
   createdAt: Date;

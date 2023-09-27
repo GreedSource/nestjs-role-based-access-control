@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Role } from 'src/common/enum/role.enum';
+import { Role } from '@enum/role.enum';
 import {
   Column,
   Entity,
@@ -9,9 +9,13 @@ import {
   DeleteDateColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
+import { Book } from './book.entity';
+import { Keyword } from './keyword.entity';
+import { Publisher } from './publisher.entity';
 
 @Entity('users')
 export class User {
@@ -51,6 +55,11 @@ export class User {
   })
   profilePic_format: string;
 
+  @Column({
+    nullable: true,
+  })
+  profilePic_publicId: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -59,6 +68,15 @@ export class User {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @OneToMany(() => Book, (book: Book) => book.createdBy)
+  books: Book[];
+
+  @OneToMany(() => Keyword, (keyword: Keyword) => keyword.createdBy)
+  keywords: Keyword[];
+
+  @OneToMany(() => Publisher, (publisher: Publisher) => publisher.createdBy)
+  publishers: Publisher[];
 
   @BeforeInsert()
   @BeforeUpdate()

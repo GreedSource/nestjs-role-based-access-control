@@ -11,8 +11,8 @@ import {
   ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { KeywordsService } from './keywords.service';
-import { CreateKeywordDto } from './dto/create-keyword.dto';
-import { UpdateKeywordDto } from './dto/update-keyword.dto';
+import { CreateKeywordDto } from '@dto/keywords/create-keyword.dto';
+import { UpdateKeywordDto } from '@dto/keywords/update-keyword.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '@guards/jwt-auth.guard';
 

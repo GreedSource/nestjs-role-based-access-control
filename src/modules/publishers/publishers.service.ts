@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePublisherDto } from './dto/create-publisher.dto';
-import { UpdatePublisherDto } from './dto/update-publisher.dto';
+import { CreatePublisherDto } from '@dto/publishers/create-publisher.dto';
+import { UpdatePublisherDto } from '@dto/publishers/update-publisher.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Publisher } from '@entities/publisher.entity';
 import { Repository } from 'typeorm';

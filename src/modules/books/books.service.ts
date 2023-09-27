@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateBookDto } from './dto/create-book.dto';
-import { UpdateBookDto } from './dto/update-book.dto';
+import { CreateBookDto } from '@dto/books/create-book.dto';
+import { UpdateBookDto } from '@dto/books/update-book.dto';
 import { Book } from '@entities/book.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -11,20 +11,21 @@ export class BooksService {
     @InjectRepository(Book)
     private readonly repository: Repository<Book>,
   ) {}
-  async create(createBookDto: CreateBookDto): Promise<Book> {
-    return this.repository.save(createBookDto);
+  async create(createBookDto: CreateBookDto) {
+    const entity = await this.repository.create(createBookDto);
+    return await this.repository.save(entity);
   }
 
   async findAll(): Promise<Book[]> {
-    return this.repository.find({
-      relations: ['publisher', 'keywords'],
+    return await this.repository.find({
+      loadEagerRelations: true,
     });
   }
 
   async findOne(id: string): Promise<Book> {
-    return this.repository.findOne({
+    return await this.repository.findOne({
       where: { id },
-      relations: ['publisher', 'keywords'],
+      loadEagerRelations: true,
     });
   }
 
@@ -32,7 +33,7 @@ export class BooksService {
     const toUpdate = await this.repository.findOne({
       where: { id },
     });
-    return this.repository.save(Object.assign(toUpdate, updateBookDto));
+    return await this.repository.save(Object.assign(toUpdate, updateBookDto));
   }
 
   async remove(id: string) {

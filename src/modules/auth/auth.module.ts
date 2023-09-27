@@ -7,7 +7,6 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
 import { RoleGuard } from '@guards/role.guard';
 import { UserModule } from '@modules/user/user.module';
-import { CloudinaryModule } from '@modules/cloudinary/cloudinary.module';
 @Module({
   providers: [
     AuthService,
@@ -19,7 +18,6 @@ import { CloudinaryModule } from '@modules/cloudinary/cloudinary.module';
   controllers: [AuthController],
   imports: [
     UserModule,
-    CloudinaryModule,
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: process.env.JWT_SECRET,

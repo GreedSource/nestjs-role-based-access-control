@@ -45,11 +45,10 @@ $ yarn run start:dev
 $ yarn run start:prod
 
 # Dockers create image
-docker build -t [image-name] .
+$ docker build -t [image-name] .
 
 #Dockers create container
-
-docker run --name [container-name] -d [EXTERNAL-PORT]:[INTERNAL-PORT] -e "[ENVIROMENT=VALUE]" [image-name]
+$ docker run --name [container-name] -d -p [EXTERNAL-PORT]:[INTERNAL-PORT] -e "[ENVIROMENT=VALUE]" [image-name]
 ```
 
 ## Test

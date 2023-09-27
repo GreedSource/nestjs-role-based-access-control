@@ -9,16 +9,14 @@ import {
   UploadedFile,
 } from '@nestjs/common';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { ValidateUserDto } from './dto/validate-user.dto';
-import { AuthService } from './auth.service';
-import { LocalAuthGuard } from '@guards/local-auth.guard';
-import { UserService } from '@modules/user/user.service';
-import { RefreshJwtGuard } from '@guards/refresh-jwt-auth.guard';
-import { RefreshTokenDto } from './dto/refresh-token.dto';
-import { RegisterUserDto } from '@modules/user/dto/register-user.dto';
-import { CloudinaryService } from '@modules/cloudinary/cloudinary.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CloudinaryFolder } from '@common/enum/cloudinary-folder.enum';
+import { UserService } from '@modules/user/user.service';
+import { RegisterUserDto } from '@dto/users/register-user.dto';
+import { RefreshJwtGuard } from '@guards/refresh-jwt-auth.guard';
+import { LocalAuthGuard } from '@guards/local-auth.guard';
+import { RefreshTokenDto } from '@dto/auth/refresh-token.dto';
+import { ValidateUserDto } from '@dto/auth/validate-user.dto';
+import { AuthService } from './auth.service';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -27,7 +25,6 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UserService,
-    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   @UseGuards(LocalAuthGuard)
@@ -43,16 +40,7 @@ export class AuthController {
     @Body() registerUserDto: RegisterUserDto,
     @UploadedFile() image,
   ) {
-    if (image) {
-      const cloudinaryImage = await this.cloudinaryService.uploadFile(
-        image,
-        CloudinaryFolder.Profile,
-      );
-      registerUserDto.profilePic = cloudinaryImage?.secure_url;
-      registerUserDto.profilePic_format = cloudinaryImage?.format;
-      registerUserDto.profilePic_size = cloudinaryImage?.bytes;
-    }
-    return await this.userService.create(registerUserDto);
+    return await this.userService.create(registerUserDto, image);
   }
 
   @UseGuards(RefreshJwtGuard)

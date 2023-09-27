@@ -5,17 +5,17 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from './user.entity';
 @Entity('publishers')
 export class Publisher {
-  @ApiProperty({ example: '3e28d06e-ff8b-44d6-9a44-0540ac44477b' })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty({ example: 'George Orwell' })
   @Column()
   name: string;
 
@@ -30,4 +30,7 @@ export class Publisher {
 
   @OneToMany(() => Book, (book: Book) => book.publisher)
   books: Book[];
+
+  @ManyToOne(() => User, (user: User) => user.publishers)
+  createdBy: User;
 }

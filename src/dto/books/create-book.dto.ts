@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsString } from 'class-validator';
+import { IsInt, IsOptional, IsString, IsNotEmpty } from 'class-validator';
 import { Keyword } from '@entities/keyword.entity';
 import { Publisher } from '@entities/publisher.entity';
+import { User } from '@entities/user.entity';
 export class CreateBookDto {
   @IsString()
   @ApiProperty({ example: 'Rebelión en la granja' })
@@ -34,8 +35,13 @@ export class CreateBookDto {
   readonly image_url: string;
 
   @ApiProperty({ example: { id: '3e28d06e-ff8b-44d6-9a44-0540ac44477b' } })
+  @IsOptional()
   readonly publisher: Publisher;
 
   @ApiProperty({ example: [{ id: '3e28d06e-ff8b-44d6-9a44-0540ac44477b' }] })
+  @IsOptional()
   readonly keywords: Keyword[];
+
+  @IsOptional()
+  readonly createdBy: User;
 }
