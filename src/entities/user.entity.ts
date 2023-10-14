@@ -1,24 +1,24 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Role } from '@enum/role.enum';
 import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
   BeforeInsert,
   BeforeUpdate,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
   OneToMany,
+  JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
 import { Book } from './book.entity';
 import { Keyword } from './keyword.entity';
 import { Publisher } from './publisher.entity';
+import { TimestampsEntity } from './timestamps.entity';
+import { Role } from './role.entity';
 
 @Entity('users')
-export class User {
+export class User extends TimestampsEntity {
   @ApiProperty({ example: '3e28d06e-ff8b-44d6-9a44-0540ac44477b' })
   @PrimaryGeneratedColumn('uuid', {
     comment: 'uuid',
@@ -34,40 +34,40 @@ export class User {
   email: string;
 
   @Column()
-  @Exclude({ toPlainOnly: true })
+  @Exclude()
   password: string;
 
-  @Column({ default: 'owner' })
+  @ManyToOne(() => Role, (role: Role) => role.users, {
+    eager: true,
+  })
+  @JoinColumn({
+    name: 'role_id',
+    referencedColumnName: 'id',
+  })
   role: Role;
 
   @Column({
     nullable: true,
   })
-  profilePic: string;
+  avatar: string;
 
   @Column('integer', {
     nullable: true,
+    name: 'avatar_filesize',
   })
-  profilePic_size: number;
+  avatarFilesize: number;
 
   @Column({
     nullable: true,
+    name: 'avatar_format',
   })
-  profilePic_format: string;
+  avatarFormat: string;
 
   @Column({
     nullable: true,
+    name: 'avatar_public_id',
   })
-  profilePic_publicId: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
+  avatarPublicId: string;
 
   @OneToMany(() => Book, (book: Book) => book.createdBy)
   books: Book[];
@@ -81,10 +81,9 @@ export class User {
   @BeforeInsert()
   @BeforeUpdate()
   async beforeInsert() {
-    if (this.password)
-      this.password = await bcrypt.hash(
-        this.password,
-        Number(process.env.BCRYPT_SALT),
-      );
+    if (this.password) {
+      const salt = await bcrypt.genSalt();
+      this.password = await bcrypt.hash(this.password, salt);
+    }
   }
 }

@@ -1,3 +1,4 @@
+import { Role } from '@entities/role.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsString,
@@ -6,7 +7,6 @@ import {
   IsOptional,
   IsStrongPassword,
 } from 'class-validator';
-import { Role } from '@enum/role.enum';
 export class CreateUserDto {
   @ApiProperty({
     example: 'John Doe',
@@ -30,7 +30,6 @@ export class CreateUserDto {
   })
   readonly password: string;
 
-  @IsEnum(Role)
   @IsOptional()
   @ApiProperty({ example: 'admin' })
   readonly role?: Role;

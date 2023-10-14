@@ -1,12 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import {
-  DeliveryType,
-  ResourceType,
-  UploadApiErrorResponse,
-  UploadApiResponse,
-  v2,
-} from 'cloudinary';
+import { UploadApiErrorResponse, UploadApiResponse, v2 } from 'cloudinary';
 import toStream = require('buffer-to-stream');
+import { CloudinaryDestroyOptionsInterface } from 'src/interfaces/cloudinary-destroy-options.interface';
 
 @Injectable()
 export class CloudinaryService {
@@ -26,14 +21,10 @@ export class CloudinaryService {
 
   async deleteFile(
     public_id: string,
-    options?: {
-      resource_type?: ResourceType;
-      type?: DeliveryType;
-      invalidate?: boolean;
-    },
+    options?: CloudinaryDestroyOptionsInterface,
   ) {
     return await v2.uploader
       .destroy(public_id, options)
-      .then((result) => console.log(result));
+      .then((result) => result);
   }
 }

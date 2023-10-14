@@ -2,10 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Logger, ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
+  app.use(cookieParser());
   if (process.env.NODE_ENV === 'development') {
     const config = new DocumentBuilder()
       .setTitle('Access Control API Project')
@@ -34,6 +36,6 @@ async function bootstrap() {
     }),
   );
   await app.listen(process.env.NODE_PORT || 3000);
-  Logger.log(`Running at ${await app.getUrl()}`);
+  Logger.log(`${await app.getUrl()}`, 'Running at');
 }
 bootstrap();
