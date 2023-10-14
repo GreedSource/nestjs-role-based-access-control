@@ -2,6 +2,7 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateUserDto } from '@dto/users/create-user.dto';
 import { UpdateUserDto } from '@dto/users/update-user.dto';
@@ -20,29 +21,32 @@ export class UserService {
   ) {}
   async create(
     createUserDto: CreateUserDto,
-    profilePic: Express.Multer.File,
+    image: Express.Multer.File,
   ): Promise<User> {
     const entity = await this.repository.create({
       ...createUserDto,
-      ...(await this.handleFile(profilePic)),
+      ...(await this.handleFile(image)),
     });
-    return this.repository
-      .save(entity)
-      .then((result) => result)
-      .catch((e) => {
-        if (e.errno || e.sqlState === '23000') {
-          throw new ConflictException('Email is already in use.');
-        }
-        throw new InternalServerErrorException();
-      });
+    return await this.repository.save(entity).catch((e) => {
+      if (e.errno || e.sqlState === '23000') {
+        throw new ConflictException('Email is already in use.');
+      }
+      throw new InternalServerErrorException();
+    });
   }
 
   async findAll(): Promise<User[]> {
-    return this.repository.find();
+    return this.repository.find({
+      loadEagerRelations: false,
+    });
   }
 
   async findOne(id: string): Promise<User> {
-    return this.repository.findOneBy({ id });
+    try {
+      return await this.repository.findOneByOrFail({ id });
+    } catch (e) {
+      throw new NotFoundException('User not found');
+    }
   }
 
   private async handleFile(file: Express.Multer.File) {
@@ -50,34 +54,33 @@ export class UserService {
       ? await this.cloudinaryService.uploadFile(file, CloudinaryFolder.Profile)
       : undefined;
     return {
-      profilePic: cloudinaryFile?.secure_url,
-      profilePic_format: cloudinaryFile?.format,
-      profilePic_size: cloudinaryFile?.bytes,
-      profilePic_publicId: cloudinaryFile?.public_id,
+      avatar: cloudinaryFile?.secure_url,
+      avatarFormat: cloudinaryFile?.format,
+      avatarFilesize: cloudinaryFile?.bytes,
+      avatarPublicId: cloudinaryFile?.public_id,
     };
   }
 
-  async update(
-    id: string,
-    updateUserDto: UpdateUserDto,
-    profilePic: Express.Multer.File,
-  ): Promise<User> {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const entity = await this.repository.create({
       id,
       ...updateUserDto,
-      ...(await this.handleFile(profilePic)),
+      ...(await this.handleFile(updateUserDto.image)),
     });
-    return this.repository
-      .save(entity)
-      .then((result) => {
-        return result;
-      })
-      .catch((e) => {
-        if (e.errno || e.sqlState === '23000') {
-          throw new ConflictException('Email is already in use.');
-        }
-        throw new InternalServerErrorException();
-      });
+
+    const previousImage = await this.findOne(id);
+    await this.handleImageChange(previousImage);
+
+    return await this.repository.save(entity).catch((e) => {
+      if (e.errno || e.sqlState === '23000') {
+        throw new ConflictException('Email is already in use.');
+      }
+      throw new InternalServerErrorException();
+    });
+  }
+
+  async handleImageChange(user: User): Promise<void> {
+    await this.cloudinaryService.deleteFile(user.avatarPublicId);
   }
 
   async remove(id: string) {
@@ -85,6 +88,6 @@ export class UserService {
   }
 
   async findByEmail(email: string): Promise<User> {
-    return await this.repository.findOneBy({ email: email });
+    return await this.repository.findOneBy({ email });
   }
 }

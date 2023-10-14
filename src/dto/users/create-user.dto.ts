@@ -1,4 +1,6 @@
+import { Role } from '@entities/role.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsString,
   IsEnum,
@@ -6,7 +8,6 @@ import {
   IsOptional,
   IsStrongPassword,
 } from 'class-validator';
-import { Role } from '@enum/role.enum';
 export class CreateUserDto {
   @ApiProperty({
     example: 'John Doe',
@@ -19,7 +20,7 @@ export class CreateUserDto {
   readonly email: string;
 
   @ApiProperty({
-    example: 'Abcde1!!!!',
+    example: 'L3tMe.1n',
   })
   @IsStrongPassword({
     minLength: 8,
@@ -30,9 +31,9 @@ export class CreateUserDto {
   })
   readonly password: string;
 
-  @IsEnum(Role)
   @IsOptional()
-  @ApiProperty({ example: 'admin' })
+  @ApiProperty({ example: 1, type: Number })
+  @Type(() => Role)
   readonly role?: Role;
 
   @ApiProperty({ type: 'string', format: 'binary', required: false })

@@ -8,7 +8,7 @@ export class ValidateUserDto {
 
   @IsString()
   @ApiProperty({
-    example: 'Abcde1!!!!',
+    example: 'L3tMe.1n',
   })
   readonly password: string;
 

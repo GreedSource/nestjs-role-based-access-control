@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '@modules/auth/auth.module';
@@ -7,20 +7,23 @@ import { CloudinaryModule } from '@modules/cloudinary/cloudinary.module';
 import { KeywordsModule } from '@modules/keywords/keywords.module';
 import { PublishersModule } from '@modules/publishers/publishers.module';
 import { UserModule } from '@modules/user/user.module';
+import { AppLoggerMiddleware } from './middleware/app-logger.middleware';
+import { RoleModule } from './modules/role/role.module';
+import { PermissionModule } from './modules/permission/permission.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: 'postgres',
       host: process.env.TYPEORM_DB_HOST,
       port: Number(process.env.TYPEORM_DB_PORT),
       username: process.env.TYPEORM_DB_USER,
       password: process.env.TYPEORM_DB_PASSWORD,
       database: process.env.TYPEORM_DB_DATABASE,
       entities: ['dist/entities/*.entity{.js,.ts}'],
-      synchronize: Boolean(process.env.TYPEORM_DB_SYNC),
-      logging: Boolean(process.env.TYPEORM_DB_SYNC) ?? false,
+      synchronize: JSON.parse(process.env.TYPEORM_DB_SYNC) ?? false,
+      logging: JSON.parse(process.env.TYPEORM_LOGGING) ?? false,
     }),
     AuthModule,
     BooksModule,
@@ -28,8 +31,14 @@ import { UserModule } from '@modules/user/user.module';
     KeywordsModule,
     PublishersModule,
     UserModule,
+    RoleModule,
+    PermissionModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(AppLoggerMiddleware).forRoutes('*');
+  }
+}

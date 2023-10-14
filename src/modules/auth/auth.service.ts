@@ -3,6 +3,9 @@ import { UserService } from '@modules/user/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@entities/user.entity';
+import { TokenResponse } from 'src/interfaces/token-response.interface';
+import { instanceToInstance } from 'class-transformer';
+import * as _ from 'lodash';
 
 @Injectable()
 export class AuthService {
@@ -13,37 +16,34 @@ export class AuthService {
   async validateUser(username: string, password: string) {
     const user = await this.userService.findByEmail(username);
     if (user && (await bcrypt.compare(password, user.password))) {
-      const { password, ...payload } = user;
-      return payload;
+      return _.omit(user, ['password', 'role']);
     }
   }
 
-  async login(user: User) {
+  private async createToken(user: User): Promise<TokenResponse> {
     const payload = {
       username: user.email,
       sub: {
         name: user.name,
-        role: user.role,
       },
     };
+
     return {
-      ...user,
       accessToken: this.jwtService.sign(payload),
-      refreshToken: this.jwtService.sign(payload, { expiresIn: '7d' }),
+      refreshToken: this.jwtService.sign(payload, {
+        expiresIn: `${process.env.REFRESH_TOKEN_EXPIRATION_TIME}s`,
+      }),
     };
   }
 
-  async refreshToken(user: User) {
-    const payload = {
-      username: user.email,
-      sub: {
-        name: user.name,
-        role: user.role,
-      },
-    };
-    return {
-      accessToken: this.jwtService.sign(payload),
-      refreshToken: this.jwtService.sign(payload, { expiresIn: '7d' }),
-    };
+  async login(user: User) {
+    return instanceToInstance({
+      ...user,
+      ...(await this.createToken(user)),
+    });
+  }
+
+  async refreshToken(user: User): Promise<TokenResponse> {
+    return await this.createToken(user);
   }
 }

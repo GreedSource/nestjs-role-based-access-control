@@ -17,25 +17,27 @@ import { CreateUserDto } from '@dto/users/create-user.dto';
 import { UpdateUserDto } from '@dto/users/update-user.dto';
 import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '@guards/jwt-auth.guard';
-import { Roles } from '@decorators/role.decorator';
-import { Role } from '@enum/role.enum';
-import { RoleGuard } from '@guards/role.guard';
+// import { Roles } from '@decorators/role.decorator';
+// import { Role } from '@enum/role.enum';
+import { RoleBasedAccessControlGuard } from '@guards/role-based-access-control.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ResponseDto } from '@dto/common/response.dto';
 import { User } from '@entities/user.entity';
+import { RoleAccess } from '@decorators/role-access.decorator';
+import { CreatedByInterceptor } from '@interceptors/created-by.interceptor';
 
 @Controller('user')
 @ApiTags('user')
-@UseGuards(JwtGuard, RoleGuard)
+@UseGuards(JwtGuard, RoleBasedAccessControlGuard)
 @ApiBearerAuth('access-token')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  @Roles(Role.Owner, Role.Admin)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('image'))
+  @RoleAccess('users.create')
   async create(@Body() createUserDto: CreateUserDto, @UploadedFile() image) {
     return {
       status: HttpStatus.CREATED,
@@ -45,7 +47,8 @@ export class UserController {
   }
 
   @Get()
-  @Roles(Role.Owner, Role.Admin)
+  @RoleAccess('users.find')
+  @UseInterceptors(CreatedByInterceptor)
   async findAll(): Promise<ResponseDto<User>> {
     return {
       status: HttpStatus.OK,
@@ -55,7 +58,7 @@ export class UserController {
   }
 
   @Get(':id')
-  @Roles(Role.Owner, Role.Admin)
+  @RoleAccess('users.findOne')
   async findOne(@Param('id') id: string): Promise<ResponseDto<User>> {
     return {
       status: HttpStatus.OK,
@@ -65,23 +68,26 @@ export class UserController {
   }
 
   @Patch(':id')
-  @Roles(Role.Owner, Role.Admin)
   @ApiConsumes('multipart/form-data')
+  @RoleAccess('users.update')
   @UseInterceptors(FileInterceptor('image'))
   async update(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
-    @UploadedFile() image,
-  ) {
+    @UploadedFile() image: Express.Multer.File,
+  ): Promise<ResponseDto<User>> {
     return {
       status: HttpStatus.OK,
       message: 'User updated',
-      data: await this.userService.update(id, updateUserDto, image),
+      data: await this.userService.update(id, {
+        ...updateUserDto,
+        image,
+      }),
     };
   }
 
   @Delete(':id')
-  @Roles(Role.Owner, Role.Admin)
+  @RoleAccess('users.delete')
   async remove(@Param('id') id: string): Promise<ResponseDto<User>> {
     const response = await this.userService.remove(id);
     if (response.affected) {

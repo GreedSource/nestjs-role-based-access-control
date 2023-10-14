@@ -5,15 +5,17 @@ import { JwtModule } from '@nestjs/jwt';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
-import { RoleGuard } from '@guards/role.guard';
+import { RoleBasedAccessControlGuard } from '@guards/role-based-access-control.guard';
 import { UserModule } from '@modules/user/user.module';
+import { GoogleStrategy } from './strategies/google.strategy';
 @Module({
   providers: [
     AuthService,
+    RoleBasedAccessControlGuard,
     LocalStrategy,
     JwtStrategy,
     RefreshTokenStrategy,
-    RoleGuard,
+    GoogleStrategy,
   ],
   controllers: [AuthController],
   imports: [
@@ -21,7 +23,9 @@ import { UserModule } from '@modules/user/user.module';
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: process.env.JWT_SECRET,
-        signOptions: { expiresIn: '3600s' },
+        signOptions: {
+          expiresIn: `${process.env.ACCESS_TOKEN_EXPIRATION_TIME}s`,
+        },
       }),
     }),
   ],
