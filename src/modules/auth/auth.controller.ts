@@ -44,7 +44,7 @@ export class AuthController {
     const response = await this.authService.login(req.user);
     res.cookie('Authorization', response.accessToken, {
       expires: new Date(
-        Date.now() + Number(process.env.ACCESS_TOKEN_EXPIRATION_TIME),
+        Date.now() + Number(process.env.ACCESS_TOKEN_EXPIRATION_TIME) * 1000,
       ),
     });
     return response;
@@ -73,7 +73,10 @@ export class AuthController {
     @Body() registerUserDto: RegisterUserDto,
     @UploadedFile() image,
   ) {
-    return await this.userService.create(registerUserDto, image);
+    return await this.authService.register({
+      ...registerUserDto,
+      image,
+    });
   }
 
   @UseGuards(RefreshJwtGuard)

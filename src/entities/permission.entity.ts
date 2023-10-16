@@ -5,11 +5,11 @@ import {
   ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { TimestampsEntity } from './timestamps.entity';
 import { Role } from './role.entity';
+import { DateAudit } from './date-audit.entity';
 
 @Entity('permissions')
-export class Permission extends TimestampsEntity {
+export class Permission {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -17,6 +17,8 @@ export class Permission extends TimestampsEntity {
     unique: true,
   })
   slug: string;
+  @Column((type) => DateAudit)
+  audit: DateAudit;
 
   @ManyToMany(() => Role, (role: Role) => role.permissions)
   @JoinTable({

@@ -6,12 +6,15 @@ import { User } from '@entities/user.entity';
 import { TokenResponse } from 'src/interfaces/token-response.interface';
 import { instanceToInstance } from 'class-transformer';
 import * as _ from 'lodash';
+import { RegisterUserDto } from '@dto/users/register-user.dto';
+import { RoleService } from '@modules/role/role.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private readonly roleService: RoleService,
   ) {}
   async validateUser(username: string, password: string) {
     const user = await this.userService.findByEmail(username);
@@ -40,6 +43,15 @@ export class AuthService {
     return instanceToInstance({
       ...user,
       ...(await this.createToken(user)),
+    });
+  }
+
+  async register(registerUserDto: RegisterUserDto) {
+    return await this.userService.create({
+      ...registerUserDto,
+      role: {
+        id: 2,
+      },
     });
   }
 

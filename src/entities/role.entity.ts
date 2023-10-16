@@ -7,13 +7,13 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { TimestampsEntity } from './timestamps.entity';
+import { DateAudit } from './date-audit.entity';
 import { Permission } from './permission.entity';
 import { User } from './user.entity';
 import * as slug from 'slug';
 
 @Entity('roles')
-export class Role extends TimestampsEntity {
+export class Role {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -27,6 +27,9 @@ export class Role extends TimestampsEntity {
   })
   slug: string;
 
+  @Column((type) => DateAudit)
+  audit: DateAudit;
+
   @ManyToMany(() => Permission, (permission: Permission) => permission.roles, {
     eager: true,
   })
@@ -38,6 +41,8 @@ export class Role extends TimestampsEntity {
   @BeforeInsert()
   @BeforeUpdate()
   async createSlug() {
-    this.slug ? slug(this.name) : undefined;
+    console.log('creating slug');
+    console.log(this.name);
+    this.slug = this.name ? slug(this.name) : undefined;
   }
 }

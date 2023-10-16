@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class User1696736231872 implements MigrationInterface {
+export class Books1697349205816 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'users',
+        name: 'books',
         columns: [
           {
             name: 'id',
@@ -15,46 +15,52 @@ export class User1696736231872 implements MigrationInterface {
             default: 'gen_random_uuid()',
           },
           {
-            name: 'name',
+            name: 'title',
             type: 'character varying',
             length: '255',
             isNullable: false,
           },
           {
-            name: 'email',
-            type: 'character varying',
-            isNullable: false,
-            isUnique: true,
-          },
-          {
-            name: 'password',
+            name: 'genre',
             type: 'character varying',
             isNullable: false,
           },
           {
-            name: 'avatar_path',
+            name: 'description',
+            type: 'text',
+            isNullable: false,
+          },
+          {
+            name: 'author',
+            type: 'character varying',
+            isNullable: false,
+          },
+          {
+            name: 'pages',
+            type: 'int',
+            isNullable: false,
+          },
+          {
+            name: 'cover_path',
             type: 'character varying',
             isNullable: true,
           },
           {
-            name: 'avatar_filesize',
+            name: 'cover_filesize',
             type: 'int',
             isNullable: true,
           },
           {
-            name: 'avatar_format',
+            name: 'cover_format',
             type: 'character varying',
             isNullable: true,
           },
           {
-            name: 'avatar_public_id',
+            name: 'cover_public_id',
             type: 'character varying',
             isNullable: true,
           },
-          {
-            name: 'role_id',
-            type: 'int',
-          },
+
           {
             name: 'audit_created_at',
             type: 'timestamptz',
@@ -74,6 +80,10 @@ export class User1696736231872 implements MigrationInterface {
             isNullable: true,
             default: null,
           },
+          {
+            name: 'created_by',
+            type: 'character varying',
+          },
         ],
       }),
       true,
@@ -81,6 +91,6 @@ export class User1696736231872 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('users');
+    await queryRunner.dropTable('books');
   }
 }

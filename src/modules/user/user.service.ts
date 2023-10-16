@@ -11,21 +11,31 @@ import { User } from '@entities/user.entity';
 import { Repository } from 'typeorm';
 import { CloudinaryFolder } from '@enum/cloudinary-folder.enum';
 import { CloudinaryService } from '@modules/cloudinary/cloudinary.service';
+import { File } from '@entities/file.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private repository: Repository<User>,
+    private readonly repository: Repository<User>,
     private readonly cloudinaryService: CloudinaryService,
   ) {}
-  async create(
-    createUserDto: CreateUserDto,
-    image: Express.Multer.File,
-  ): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const entity = await this.repository.create({
       ...createUserDto,
-      ...(await this.handleFile(image)),
+      avatar: await this.cloudinaryService
+        .uploadFile(createUserDto.image, CloudinaryFolder.Profile)
+        .then((result) => {
+          return <File>{
+            path: result?.secure_url,
+            format: result?.format,
+            filesize: result?.bytes,
+            publicId: result?.public_id,
+          };
+        })
+        .catch((e) => {
+          return undefined;
+        }),
     });
     return await this.repository.save(entity).catch((e) => {
       if (e.errno || e.sqlState === '23000') {
@@ -49,23 +59,23 @@ export class UserService {
     }
   }
 
-  private async handleFile(file: Express.Multer.File) {
-    const cloudinaryFile = file
-      ? await this.cloudinaryService.uploadFile(file, CloudinaryFolder.Profile)
-      : undefined;
-    return {
-      avatar: cloudinaryFile?.secure_url,
-      avatarFormat: cloudinaryFile?.format,
-      avatarFilesize: cloudinaryFile?.bytes,
-      avatarPublicId: cloudinaryFile?.public_id,
-    };
-  }
-
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const entity = await this.repository.create({
       id,
       ...updateUserDto,
-      ...(await this.handleFile(updateUserDto.image)),
+      avatar: await this.cloudinaryService
+        .uploadFile(updateUserDto.image, CloudinaryFolder.Profile)
+        .then((result) => {
+          return <File>{
+            path: result?.secure_url,
+            format: result?.format,
+            filesize: result?.bytes,
+            publicId: result?.public_id,
+          };
+        })
+        .catch((e) => {
+          return undefined;
+        }),
     });
 
     const previousImage = await this.findOne(id);
@@ -80,7 +90,7 @@ export class UserService {
   }
 
   async handleImageChange(user: User): Promise<void> {
-    await this.cloudinaryService.deleteFile(user.avatarPublicId);
+    await this.cloudinaryService.deleteFile(user.avatar.publicId);
   }
 
   async remove(id: string) {

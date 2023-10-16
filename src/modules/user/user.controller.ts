@@ -26,8 +26,10 @@ import { User } from '@entities/user.entity';
 import { RoleAccess } from '@decorators/role-access.decorator';
 import { CreatedByInterceptor } from '@interceptors/created-by.interceptor';
 
-@Controller('user')
-@ApiTags('user')
+const prefix = 'users';
+
+@Controller(prefix)
+@ApiTags(prefix)
 @UseGuards(JwtGuard, RoleBasedAccessControlGuard)
 @ApiBearerAuth('access-token')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -37,17 +39,20 @@ export class UserController {
   @Post()
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('image'))
-  @RoleAccess('users.create')
+  @RoleAccess(`${prefix}.create`)
   async create(@Body() createUserDto: CreateUserDto, @UploadedFile() image) {
     return {
       status: HttpStatus.CREATED,
       message: 'Users created',
-      data: await this.userService.create(createUserDto, image),
+      data: await this.userService.create({
+        ...createUserDto,
+        image,
+      }),
     };
   }
 
   @Get()
-  @RoleAccess('users.find')
+  @RoleAccess(`${prefix}.find`)
   @UseInterceptors(CreatedByInterceptor)
   async findAll(): Promise<ResponseDto<User>> {
     return {
@@ -58,7 +63,7 @@ export class UserController {
   }
 
   @Get(':id')
-  @RoleAccess('users.findOne')
+  @RoleAccess(`${prefix}.findOne`)
   async findOne(@Param('id') id: string): Promise<ResponseDto<User>> {
     return {
       status: HttpStatus.OK,
@@ -69,7 +74,7 @@ export class UserController {
 
   @Patch(':id')
   @ApiConsumes('multipart/form-data')
-  @RoleAccess('users.update')
+  @RoleAccess(`${prefix}.update`)
   @UseInterceptors(FileInterceptor('image'))
   async update(
     @Param('id') id: string,
@@ -87,7 +92,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  @RoleAccess('users.delete')
+  @RoleAccess(`${prefix}.delete`)
   async remove(@Param('id') id: string): Promise<ResponseDto<User>> {
     const response = await this.userService.remove(id);
     if (response.affected) {

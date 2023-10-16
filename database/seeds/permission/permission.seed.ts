@@ -6,7 +6,6 @@ import {
   BooksPermissions,
   KeywordsPermissions,
   RolesPermissions,
-  PublishersPermissions,
 } from './modules';
 
 export default class PermissionSeeder implements Seeder {
@@ -22,7 +21,6 @@ export default class PermissionSeeder implements Seeder {
       ...BooksPermissions,
       ...KeywordsPermissions,
       ...RolesPermissions,
-      ...PublishersPermissions,
     ]);
     await repository.upsert(entities, {
       skipUpdateIfNoValuesChanged: true, // If true, postgres will skip the update if no values would be changed (reduces writes)
