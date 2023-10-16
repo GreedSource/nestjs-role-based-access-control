@@ -5,18 +5,19 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class RolePermissions1697257930223 implements MigrationInterface {
+export class BookKeywords1697351318550 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'role_permissions',
+        name: 'book_keywords',
         columns: [
           {
-            name: 'role_id',
-            type: 'int',
+            name: 'book_id',
+            type: 'character varying',
+            length: '36',
           },
           {
-            name: 'permission_id',
+            name: 'keyword_id',
             type: 'character varying',
             length: '36',
           },
@@ -26,27 +27,27 @@ export class RolePermissions1697257930223 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      'role_permissions', // Table name
+      'book_keywords', // Table name
       new TableForeignKey({
-        columnNames: ['role_id'],
+        columnNames: ['book_id'],
         referencedColumnNames: ['id'], // Replace with the primary key of EntityA
-        referencedTableName: 'roles', // Replace with the name of EntityA's table
+        referencedTableName: 'books', // Replace with the name of EntityA's table
         onDelete: 'CASCADE',
       }),
     );
 
     await queryRunner.createForeignKey(
-      'role_permissions', // Table name
+      'book_keywords', // Table name
       new TableForeignKey({
-        columnNames: ['permission_id'],
+        columnNames: ['keyword_id'],
         referencedColumnNames: ['id'], // Replace with the primary key of EntityA
-        referencedTableName: 'permissions', // Replace with the name of EntityA's table
+        referencedTableName: 'keywords', // Replace with the name of EntityA's table
         onDelete: 'CASCADE',
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('role_permissions');
+    await queryRunner.dropTable('book_keywords');
   }
 }

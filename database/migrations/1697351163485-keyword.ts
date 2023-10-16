@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class Permission1697257917913 implements MigrationInterface {
+export class Keyword1697351163485 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'permissions',
+        name: 'keywords',
         columns: [
           {
             name: 'id',
@@ -15,7 +15,7 @@ export class Permission1697257917913 implements MigrationInterface {
             default: 'gen_random_uuid()',
           },
           {
-            name: 'slug',
+            name: 'keyword',
             type: 'character varying',
             length: '255',
             isNullable: true,
@@ -40,6 +40,10 @@ export class Permission1697257917913 implements MigrationInterface {
             isNullable: true,
             default: null,
           },
+          {
+            name: 'created_by',
+            type: 'character varying',
+          },
         ],
       }),
       true,
@@ -47,6 +51,6 @@ export class Permission1697257917913 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('permissions');
+    await queryRunner.dropTable('keywords');
   }
 }

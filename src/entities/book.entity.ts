@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Keyword } from './keyword.entity';
-import { Publisher } from './publisher.entity';
 import {
   Column,
   Entity,
@@ -11,12 +10,13 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from './user.entity';
-import { TimestampsEntity } from './timestamps.entity';
+import { DateAudit } from './date-audit.entity';
+import { File } from './file.entity';
 
 export type BookDocument = Book & Document;
 
 @Entity('books')
-export class Book extends TimestampsEntity {
+export class Book {
   @ApiProperty({ example: '3e28d06e-ff8b-44d6-9a44-0540ac44477b' })
   @PrimaryGeneratedColumn('uuid', {
     comment: 'uuid',
@@ -38,16 +38,11 @@ export class Book extends TimestampsEntity {
   @Column()
   pages: number;
 
-  @Column()
-  image_url: string;
+  @Column((type) => DateAudit)
+  audit: DateAudit;
 
-  @ManyToOne(() => Publisher, (publisher: Publisher) => publisher.books, {
-    eager: true,
-  })
-  @JoinColumn({
-    name: 'publisher_id',
-  })
-  publisher: Publisher;
+  @Column((type) => File)
+  cover: File;
 
   @ManyToMany(() => Keyword, (keyword: Keyword) => keyword.books, {
     eager: true,
@@ -65,9 +60,7 @@ export class Book extends TimestampsEntity {
   })
   keywords: Keyword[];
 
-  @ManyToOne(() => User, (user: User) => user.books, {
-    eager: true,
-  })
+  @ManyToOne(() => User, (user: User) => user.books)
   @JoinColumn({
     name: 'created_by',
   })

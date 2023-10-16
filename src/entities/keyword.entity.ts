@@ -8,9 +8,9 @@ import {
 } from 'typeorm';
 import { Book } from './book.entity';
 import { User } from './user.entity';
-import { TimestampsEntity } from './timestamps.entity';
-@Entity()
-export class Keyword extends TimestampsEntity {
+import { DateAudit } from './date-audit.entity';
+@Entity('keywords')
+export class Keyword {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -25,4 +25,7 @@ export class Keyword extends TimestampsEntity {
     name: 'created_by',
   })
   createdBy: User;
+
+  @Column((type) => DateAudit)
+  audit: DateAudit;
 }

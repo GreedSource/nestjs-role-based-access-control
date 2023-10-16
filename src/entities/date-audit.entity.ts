@@ -1,20 +1,20 @@
 import { Exclude } from 'class-transformer';
 import { CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
 
-export class TimestampsEntity {
+export class DateAudit {
   @CreateDateColumn({
-    name: 'created_at',
+    name: '_created_at',
   })
   createdAt: Date;
 
   @UpdateDateColumn({
-    name: 'updated_at',
+    name: '_updated_at',
   })
   updatedAt: Date;
 
   @Exclude()
   @DeleteDateColumn({
-    name: 'deleted_at',
+    name: '_deleted_at',
   })
   deletedAt: Date;
 }

@@ -1,47 +1,53 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsOptional, IsString, IsNotEmpty } from 'class-validator';
-import { Keyword } from '@entities/keyword.entity';
-import { Publisher } from '@entities/publisher.entity';
+import {
+  IsInt,
+  IsOptional,
+  IsString,
+  IsNotEmpty,
+  IsArray,
+  ValidateNested,
+} from 'class-validator';
 import { User } from '@entities/user.entity';
+import { Transform, Type, plainToClass } from 'class-transformer';
+import { UuidRelationshipDto } from '@dto/common/uuid-relashinship.dto';
+import { JsonTransfom } from '@utils/data-transfom.utils';
 export class CreateBookDto {
-  @IsString()
   @ApiProperty({ example: 'Rebelión en la granja' })
+  @IsString()
+  @IsNotEmpty()
   readonly title: string;
 
   @IsString()
   @ApiProperty({ example: 'Sátira política' })
   readonly genre: string;
 
-  @IsString()
   @ApiProperty({
     example:
       'Publicada en 1945, la obra es una fábula mordaz sobre cómo el régimen soviético de Iósif Stalin corrompe el socialismo llevándolo hacia un tipo de autoritarismo',
   })
+  @IsString()
   readonly description: string;
 
-  @IsString()
   @ApiProperty({ example: 'George Orwell' })
+  @IsString()
+  @IsNotEmpty()
   readonly author: string;
 
-  @IsInt()
   @ApiProperty({ example: 64 })
+  @Transform(({ value }) => Number(value))
+  @IsInt()
   readonly pages: number;
 
-  @IsString()
-  @ApiProperty({
-    example:
-      'https://fastly.picsum.photos/id/478/400/600.jpg?hmac=t3NBVGe6igULElFULyW9k8uOs_bpBlRC01oaUuTusfc',
-  })
-  readonly image_url: string;
-
-  @ApiProperty({ example: { id: '3e28d06e-ff8b-44d6-9a44-0540ac44477b' } })
-  @IsOptional()
-  readonly publisher: Publisher;
-
-  @ApiProperty({ example: [{ id: '3e28d06e-ff8b-44d6-9a44-0540ac44477b' }] })
-  @IsOptional()
-  readonly keywords: Keyword[];
+  @ApiProperty({ example: [{ id: '4ca8b463-1cc7-4b8c-b915-344010306272' }] })
+  @Transform((params) => JsonTransfom(params, UuidRelationshipDto))
+  @ValidateNested({ each: true })
+  @Type(() => UuidRelationshipDto)
+  readonly keywords: UuidRelationshipDto[];
 
   @IsOptional()
   readonly createdBy: User;
+
+  @ApiProperty({ type: 'string', format: 'binary', required: false })
+  @IsOptional()
+  readonly image?: Express.Multer.File;
 }

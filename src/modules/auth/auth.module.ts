@@ -8,6 +8,7 @@ import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
 import { RoleBasedAccessControlGuard } from '@guards/role-based-access-control.guard';
 import { UserModule } from '@modules/user/user.module';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { RoleModule } from '@modules/role/role.module';
 @Module({
   providers: [
     AuthService,
@@ -20,6 +21,7 @@ import { GoogleStrategy } from './strategies/google.strategy';
   controllers: [AuthController],
   imports: [
     UserModule,
+    RoleModule,
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: process.env.JWT_SECRET,

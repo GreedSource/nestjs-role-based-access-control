@@ -1,5 +1,3 @@
-import { User } from '../../../src/entities/user.entity';
-
 export const UsersData = [
   {
     name: 'John',

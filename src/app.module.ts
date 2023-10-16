@@ -5,11 +5,9 @@ import { AuthModule } from '@modules/auth/auth.module';
 import { BooksModule } from '@modules/books/books.module';
 import { CloudinaryModule } from '@modules/cloudinary/cloudinary.module';
 import { KeywordsModule } from '@modules/keywords/keywords.module';
-import { PublishersModule } from '@modules/publishers/publishers.module';
 import { UserModule } from '@modules/user/user.module';
 import { AppLoggerMiddleware } from './middleware/app-logger.middleware';
 import { RoleModule } from './modules/role/role.module';
-import { PermissionModule } from './modules/permission/permission.module';
 
 @Module({
   imports: [
@@ -29,10 +27,8 @@ import { PermissionModule } from './modules/permission/permission.module';
     BooksModule,
     CloudinaryModule,
     KeywordsModule,
-    PublishersModule,
     UserModule,
     RoleModule,
-    PermissionModule,
   ],
   controllers: [],
   providers: [],
