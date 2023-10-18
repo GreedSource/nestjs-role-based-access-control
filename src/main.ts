@@ -8,6 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
   app.use(cookieParser());
+  app.enableCors();
   if (process.env.NODE_ENV === 'development') {
     const config = new DocumentBuilder()
       .setTitle('Access Control API Project')
@@ -27,7 +28,13 @@ async function bootstrap() {
       )
       .build();
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('docs', app, document);
+    SwaggerModule.setup('docs', app, document, {
+      swaggerOptions: {
+        apisSorter: 'alpha',
+        tagsSorter: 'alpha',
+        operationsSorter: 'alpha',
+      },
+    });
   }
   app.useGlobalPipes(
     new ValidationPipe({

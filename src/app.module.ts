@@ -8,6 +8,7 @@ import { KeywordsModule } from '@modules/keywords/keywords.module';
 import { UserModule } from '@modules/user/user.module';
 import { AppLoggerMiddleware } from './middleware/app-logger.middleware';
 import { RoleModule } from './modules/role/role.module';
+import { MeModule } from './modules/me/me.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { RoleModule } from './modules/role/role.module';
     KeywordsModule,
     UserModule,
     RoleModule,
+    MeModule,
   ],
   controllers: [],
   providers: [],

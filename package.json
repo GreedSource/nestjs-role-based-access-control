@@ -1,8 +1,8 @@
 {
-  "name": "access-control-project-mysql",
+  "name": "nestjs-role-based-access-control",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "greedsource",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

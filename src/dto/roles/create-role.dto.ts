@@ -1,5 +1,4 @@
 import { UuidRelationshipDto } from '@dto/common/uuid-relashinship.dto';
-import { Permission } from '@entities/permission.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {

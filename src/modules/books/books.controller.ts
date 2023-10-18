@@ -37,7 +37,6 @@ export class BooksController {
   @UseInterceptors(FileInterceptor('image'), CreatedByInterceptor)
   @RoleAccess(`${prefix}.create`)
   async create(@Body() createBookDto: CreateBookDto, @UploadedFile() image) {
-    return createBookDto;
     return await this.service.create({ ...createBookDto, image });
   }
 

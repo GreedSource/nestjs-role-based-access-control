@@ -78,8 +78,10 @@ export class UserService {
         }),
     });
 
-    const previousImage = await this.findOne(id);
-    await this.handleImageChange(previousImage);
+    if(updateUserDto.image){
+      const previousImage = await this.findOne(id);
+      await this.handleImageChange(previousImage);
+    }
 
     return await this.repository.save(entity).catch((e) => {
       if (e.errno || e.sqlState === '23000') {
@@ -89,7 +91,7 @@ export class UserService {
     });
   }
 
-  async handleImageChange(user: User): Promise<void> {
+  private async handleImageChange(user: User): Promise<void> {
     await this.cloudinaryService.deleteFile(user.avatar.publicId);
   }
 
