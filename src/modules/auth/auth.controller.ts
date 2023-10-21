@@ -42,11 +42,17 @@ export class AuthController {
     @Body() validateUserDto: ValidateUserDto,
   ) {
     const response = await this.authService.login(req.user);
-    res.cookie('Authorization', response.accessToken, {
-      expires: new Date(
-        Date.now() + Number(process.env.ACCESS_TOKEN_EXPIRATION_TIME) * 1000,
-      ),
-    });
+    res
+      .cookie('Authorization', response.accessToken, {
+        expires: new Date(
+          Date.now() + Number(process.env.ACCESS_TOKEN_EXPIRATION_TIME) * 1000,
+        ),
+      })
+      .cookie('Refresh', response.refreshToken, {
+        expires: new Date(
+          Date.now() + Number(process.env.REFRESH_TOKEN_EXPIRATION_TIME) * 1000,
+        ),
+      });
     return response;
   }
 
@@ -63,7 +69,9 @@ export class AuthController {
   @Delete('logout')
   @HttpCode(HttpStatus.NO_CONTENT)
   async logout(@Res({ passthrough: true }) res) {
-    res.cookie('Authorization', '', { expires: new Date() });
+    res
+      .cookie('Authorization', '', { expires: new Date() })
+      .cookie('Refresh', '', { expires: new Date() });
   }
 
   @Post('register')
