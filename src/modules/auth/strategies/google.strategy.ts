@@ -16,12 +16,12 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   async validate(_accessToken: string, _refreshToken: string, profile: any) {
     const { id, name, email, picture, provider } = profile;
     return {
-      providerId: id,
-      provider,
+      avatar: picture,
       email,
       name: name.givenName,
       lastName: name.familyName,
-      avatar: picture,
+      provider,
+      providerId: id,
     };
   }
 }

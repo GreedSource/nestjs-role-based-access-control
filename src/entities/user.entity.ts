@@ -33,9 +33,9 @@ export class User {
   })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   @Exclude()
-  password: string;
+  password?: string;
 
   @ManyToOne(() => Role, (role: Role) => role.users, {
     eager: true,

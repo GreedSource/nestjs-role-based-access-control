@@ -4,10 +4,8 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@entities/user.entity';
 import { TokenResponse } from 'src/interfaces/token-response.interface';
-import { instanceToInstance } from 'class-transformer';
-import * as _ from 'lodash';
+import { plainToClass } from 'class-transformer';
 import { RegisterUserDto } from '@dto/users/register-user.dto';
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -17,7 +15,7 @@ export class AuthService {
   async validateUser(username: string, password: string) {
     const user = await this.userService.findByEmail(username);
     if (user && (await bcrypt.compare(password, user.password))) {
-      return _.omit(user, ['password', 'role']);
+      return user;
     }
   }
 
@@ -38,19 +36,32 @@ export class AuthService {
     };
   }
 
-  async login(user: User) {
-    return instanceToInstance({
+  async findByEmail(email: string) {
+    const entity = await this.userService.findByEmail(email);
+    return plainToClass(User, {
+      ...entity,
+      ...(await this.createToken(entity)),
+    });
+  }
+
+  async login(user: User): Promise<User> {
+    const tokens = await this.createToken(user);
+    return await plainToClass(User, {
       ...user,
-      ...(await this.createToken(user)),
+      ...tokens,
     });
   }
 
   async register(registerUserDto: RegisterUserDto) {
-    return await this.userService.create({
+    const user = await this.userService.create({
       ...registerUserDto,
       role: {
         id: 2,
       },
+    });
+    return plainToClass(User, {
+      ...user,
+      ...(await this.createToken(user)),
     });
   }
 

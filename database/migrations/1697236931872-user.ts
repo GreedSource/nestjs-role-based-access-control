@@ -29,7 +29,7 @@ export class User1696736231872 implements MigrationInterface {
           {
             name: 'password',
             type: 'character varying',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'avatar_path',
