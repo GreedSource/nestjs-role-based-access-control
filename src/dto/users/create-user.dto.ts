@@ -32,7 +32,7 @@ export class CreateUserDto {
     minSymbols: 1,
     minUppercase: 1,
   })
-  readonly password: string;
+  readonly password?: string;
 
   @ApiProperty({
     example: 'L3tMe.1n',
@@ -45,7 +45,7 @@ export class CreateUserDto {
     minUppercase: 1,
   })
   @Match((o) => o.password)
-  readonly confirmPassword: string;
+  readonly confirmPassword?: string;
 
   @IsOptional()
   @ApiProperty({ example: 1, type: Number })

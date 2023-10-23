@@ -29,10 +29,7 @@ import { GoogleOauthGuard } from '@guards/google-oauth.guard';
 @ApiTags('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -42,11 +39,17 @@ export class AuthController {
     @Body() validateUserDto: ValidateUserDto,
   ) {
     const response = await this.authService.login(req.user);
-    res.cookie('Authorization', response.accessToken, {
-      expires: new Date(
-        Date.now() + Number(process.env.ACCESS_TOKEN_EXPIRATION_TIME) * 1000,
-      ),
-    });
+    res
+      .cookie('Authorization', response['accessToken'], {
+        expires: new Date(
+          Date.now() + Number(process.env.ACCESS_TOKEN_EXPIRATION_TIME) * 1000,
+        ),
+      })
+      .cookie('Refresh', response['refreshToken'], {
+        expires: new Date(
+          Date.now() + Number(process.env.REFRESH_TOKEN_EXPIRATION_TIME) * 1000,
+        ),
+      });
     return response;
   }
 
@@ -56,14 +59,37 @@ export class AuthController {
 
   @Get('google/callback')
   @UseGuards(GoogleOauthGuard)
-  async googleCallback(@Req() req) {
-    return await req.user;
+  async googleCallback(@Req() req, @Res({ passthrough: true }) res) {
+    const user = req.user;
+    const entity = await this.authService.findByEmail(user.email);
+
+    const response =
+      entity ??
+      (await this.authService.register({
+        email: user.email,
+        name: `${user.name} ${user.lastName}`,
+      }));
+
+    res
+      .cookie('Authorization', response['accessToken'], {
+        expires: new Date(
+          Date.now() + Number(process.env.ACCESS_TOKEN_EXPIRATION_TIME) * 1000,
+        ),
+      })
+      .cookie('Refresh', response['refreshToken'], {
+        expires: new Date(
+          Date.now() + Number(process.env.REFRESH_TOKEN_EXPIRATION_TIME) * 1000,
+        ),
+      });
+    res.redirect(`${process.env.FRONTEND_URI}`);
   }
 
   @Delete('logout')
   @HttpCode(HttpStatus.NO_CONTENT)
   async logout(@Res({ passthrough: true }) res) {
-    res.cookie('Authorization', '', { expires: new Date() });
+    res
+      .cookie('Authorization', '', { expires: new Date() })
+      .cookie('Refresh', '', { expires: new Date() });
   }
 
   @Post('register')
@@ -81,7 +107,23 @@ export class AuthController {
 
   @UseGuards(RefreshJwtGuard)
   @Post('refresh')
-  async refreshToken(@Request() req, @Body() refreshTokenDto: RefreshTokenDto) {
-    return await this.authService.refreshToken(req.user);
+  async refreshToken(
+    @Request() req,
+    @Body() refreshTokenDto: RefreshTokenDto,
+    @Res({ passthrough: true }) res,
+  ) {
+    const response = await this.authService.refreshToken(req.user);
+    res
+      .cookie('Authorization', response.accessToken, {
+        expires: new Date(
+          Date.now() + Number(process.env.ACCESS_TOKEN_EXPIRATION_TIME) * 1000,
+        ),
+      })
+      .cookie('Refresh', response.refreshToken, {
+        expires: new Date(
+          Date.now() + Number(process.env.REFRESH_TOKEN_EXPIRATION_TIME) * 1000,
+        ),
+      });
+    return response;
   }
 }

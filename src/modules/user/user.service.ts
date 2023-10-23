@@ -38,7 +38,7 @@ export class UserService {
         }),
     });
     return await this.repository.save(entity).catch((e) => {
-      if (e.errno || e.sqlState === '23000') {
+      if (e?.code === '23505') {
         throw new ConflictException('Email is already in use.');
       }
       throw new InternalServerErrorException();
@@ -78,18 +78,20 @@ export class UserService {
         }),
     });
 
-    const previousImage = await this.findOne(id);
-    await this.handleImageChange(previousImage);
+    if(updateUserDto.image){
+      const previousImage = await this.findOne(id);
+      await this.handleImageChange(previousImage);
+    }
 
     return await this.repository.save(entity).catch((e) => {
-      if (e.errno || e.sqlState === '23000') {
+      if (e?.code === '23505') {
         throw new ConflictException('Email is already in use.');
       }
       throw new InternalServerErrorException();
     });
   }
 
-  async handleImageChange(user: User): Promise<void> {
+  private async handleImageChange(user: User): Promise<void> {
     await this.cloudinaryService.deleteFile(user.avatar.publicId);
   }
 

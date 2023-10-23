@@ -41,8 +41,6 @@ export class Role {
   @BeforeInsert()
   @BeforeUpdate()
   async createSlug() {
-    console.log('creating slug');
-    console.log(this.name);
     this.slug = this.name ? slug(this.name) : undefined;
   }
 }

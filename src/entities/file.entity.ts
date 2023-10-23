@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { Column } from 'typeorm';
 
 export class File {
@@ -7,18 +8,21 @@ export class File {
   })
   path: string;
 
+  @Exclude()
   @Column('integer', {
     nullable: true,
     name: '_filesize',
   })
   filesize: number;
 
+  @Exclude()
   @Column({
     nullable: true,
     name: '_format',
   })
   format: string;
 
+  @Exclude()
   @Column({
     nullable: true,
     name: '_public_id',
