@@ -22,7 +22,8 @@
     "migration": "typeorm migration:create",
     "migration:run": "npm run typeorm migration:run",
     "migration:revert": "npm run typeorm migration:revert",
-    "db:seed": "ts-node node_modules/typeorm-extension/bin/cli.cjs seed:run -d config/typeorm.config.ts"
+    "db:seed": "ts-node node_modules/typeorm-extension/bin/cli.cjs seed:run -d config/typeorm.config.ts",
+    "generate:secret": "node -e \"console.log(require('crypto').randomBytes(256).toString('base64'));\""
   },
   "engines": {
     "node": ">=20.0.0"
