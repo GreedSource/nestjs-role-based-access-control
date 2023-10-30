@@ -27,7 +27,7 @@ export class Role {
   })
   slug: string;
 
-  @Column((type) => DateAudit)
+  @Column(() => DateAudit)
   audit: DateAudit;
 
   @ManyToMany(() => Permission, (permission: Permission) => permission.roles, {

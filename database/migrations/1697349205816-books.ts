@@ -41,6 +41,13 @@ export class Books1697349205816 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'price',
+            type: 'decimal',
+            precision: 10,
+            scale: 2,
+            isNullable: false,
+          },
+          {
             name: 'cover_path',
             type: 'character varying',
             isNullable: true,

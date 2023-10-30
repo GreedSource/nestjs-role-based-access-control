@@ -4,8 +4,8 @@ import {
   IsOptional,
   IsString,
   IsNotEmpty,
-  IsArray,
   ValidateNested,
+  IsNumber,
 } from 'class-validator';
 import { User } from '@entities/user.entity';
 import { Transform, Type, plainToClass } from 'class-transformer';
@@ -37,6 +37,15 @@ export class CreateBookDto {
   @Transform(({ value }) => Number(value))
   @IsInt()
   readonly pages: number;
+
+  @ApiProperty({ example: 64 })
+  @Transform(({ value }) => {
+    return parseFloat(value);
+  })
+  @IsNumber({
+    maxDecimalPlaces: 2,
+  })
+  readonly price: number;
 
   @ApiProperty({ example: [{ id: '4ca8b463-1cc7-4b8c-b915-344010306272' }] })
   @Transform((params) => JsonTransfom(params, UuidRelationshipDto))

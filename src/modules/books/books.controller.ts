@@ -9,7 +9,6 @@ import {
   UseGuards,
   UseInterceptors,
   ClassSerializerInterceptor,
-  Req,
   UploadedFile,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';

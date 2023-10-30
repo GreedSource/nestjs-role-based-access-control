@@ -18,11 +18,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "ts-node node_modules/typeorm/cli.js -d config/typeorm.config.ts",
+    "typeorm": "ts-node -r tsconfig-paths/register node_modules/typeorm/cli.js -d config/typeorm.config.ts ",
     "migration": "typeorm migration:create",
     "migration:run": "npm run typeorm migration:run",
     "migration:revert": "npm run typeorm migration:revert",
-    "db:seed": "ts-node node_modules/typeorm-extension/bin/cli.cjs seed:run -d config/typeorm.config.ts",
+    "db:seed": "ts-node -r tsconfig-paths/register node_modules/typeorm-extension/bin/cli.cjs seed:run -d config/typeorm.config.ts",
     "generate:secret": "node -e \"console.log(require('crypto').randomBytes(256).toString('base64'));\""
   },
   "engines": {
