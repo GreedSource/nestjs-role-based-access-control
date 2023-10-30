@@ -12,6 +12,7 @@ import {
 import { User } from './user.entity';
 import { DateAudit } from './date-audit.entity';
 import { File } from './file.entity';
+import { NumericColumnTransformer } from 'src/transformers/numeric-column.transformer';
 
 export type BookDocument = Book & Document;
 
@@ -35,13 +36,20 @@ export class Book {
   @Column()
   author: string;
 
+  @Column('decimal', {
+    transformer: new NumericColumnTransformer(),
+    precision: 10,
+    scale: 2,
+  })
+  price: number;
+
   @Column()
   pages: number;
 
-  @Column((type) => DateAudit)
+  @Column(() => DateAudit)
   audit: DateAudit;
 
-  @Column((type) => File)
+  @Column(() => File)
   cover: File;
 
   @ManyToMany(() => Keyword, (keyword: Keyword) => keyword.books, {

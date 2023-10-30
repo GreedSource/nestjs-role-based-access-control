@@ -26,6 +26,6 @@ export class Keyword {
   })
   createdBy: User;
 
-  @Column((type) => DateAudit)
+  @Column(() => DateAudit)
   audit: DateAudit;
 }

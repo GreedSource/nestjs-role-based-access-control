@@ -38,10 +38,11 @@ export class AuthService {
 
   async findByEmail(email: string) {
     const entity = await this.userService.findByEmail(email);
-    return plainToClass(User, {
-      ...entity,
-      ...(await this.createToken(entity)),
-    });
+    if (entity)
+      return plainToClass(User, {
+        ...entity,
+        ...(await this.createToken(entity)),
+      });
   }
 
   async login(user: User): Promise<User> {

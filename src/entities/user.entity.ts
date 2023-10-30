@@ -46,10 +46,10 @@ export class User {
   })
   role: Role;
 
-  @Column((type) => DateAudit)
+  @Column(() => DateAudit)
   audit: DateAudit;
 
-  @Column((type) => File)
+  @Column(() => File)
   avatar: File;
 
   @OneToMany(() => Book, (book: Book) => book.createdBy)

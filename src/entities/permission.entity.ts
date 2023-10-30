@@ -17,7 +17,7 @@ export class Permission {
     unique: true,
   })
   slug: string;
-  @Column((type) => DateAudit)
+  @Column(() => DateAudit)
   audit: DateAudit;
 
   @ManyToMany(() => Role, (role: Role) => role.permissions)
