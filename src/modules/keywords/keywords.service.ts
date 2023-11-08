@@ -2,15 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { CreateKeywordDto } from '@dto/keywords/create-keyword.dto';
 import { UpdateKeywordDto } from '@dto/keywords/update-keyword.dto';
 import { Keyword } from '@entities/keyword.entity';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
+import { KeywordRepository } from './keywords.repository';
 
 @Injectable()
 export class KeywordsService {
-  constructor(
-    @InjectRepository(Keyword)
-    private readonly repository: Repository<Keyword>,
-  ) {}
+  constructor(private readonly repository: KeywordRepository) {}
   async create(createKeywordDto: CreateKeywordDto): Promise<Keyword> {
     return this.repository.save(createKeywordDto);
   }
