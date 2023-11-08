@@ -6,15 +6,12 @@ import {
   ConflictException,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+
+import { RoleRepository } from './role.repository';
 
 @Injectable()
 export class RoleService {
-  constructor(
-    @InjectRepository(Role)
-    private readonly repository: Repository<Role>,
-  ) {}
+  constructor(private readonly repository: RoleRepository) {}
   async create(createRoleDto: CreateRoleDto) {
     try {
       const entity = await this.repository.create(createRoleDto);

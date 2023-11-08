@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   UploadedFile,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { BooksService } from './books.service';
@@ -47,7 +48,7 @@ export class BooksController {
 
   @Get(':id')
   @RoleAccess(`${prefix}.findOne`)
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return await this.service.findOne(id);
   }
 
@@ -56,7 +57,7 @@ export class BooksController {
   @UseInterceptors(FileInterceptor('image'), CreatedByInterceptor)
   @RoleAccess(`${prefix}.update`)
   async update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateBookDto: UpdateBookDto,
     @UploadedFile() image,
   ) {
@@ -65,7 +66,7 @@ export class BooksController {
 
   @Delete(':id')
   @RoleAccess(`${prefix}.delete`)
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
     return await this.service.remove(id);
   }
 }

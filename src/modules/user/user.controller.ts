@@ -11,6 +11,7 @@ import {
   ClassSerializerInterceptor,
   UploadedFile,
   HttpStatus,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from '@dto/users/create-user.dto';
@@ -64,7 +65,9 @@ export class UserController {
 
   @Get(':id')
   @RoleAccess(`${prefix}.findOne`)
-  async findOne(@Param('id') id: string): Promise<ResponseDto<User>> {
+  async findOne(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<ResponseDto<User>> {
     return {
       status: HttpStatus.OK,
       message: 'User found',
@@ -77,7 +80,7 @@ export class UserController {
   @RoleAccess(`${prefix}.update`)
   @UseInterceptors(FileInterceptor('image'))
   async update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
     @UploadedFile() image: Express.Multer.File,
   ): Promise<ResponseDto<User>> {
@@ -93,7 +96,9 @@ export class UserController {
 
   @Delete(':id')
   @RoleAccess(`${prefix}.delete`)
-  async remove(@Param('id') id: string): Promise<ResponseDto<User>> {
+  async remove(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<ResponseDto<User>> {
     const response = await this.userService.remove(id);
     if (response.affected) {
       return {

@@ -9,6 +9,7 @@ import {
   UseGuards,
   UseInterceptors,
   ClassSerializerInterceptor,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { KeywordsService } from './keywords.service';
 import { CreateKeywordDto } from '@dto/keywords/create-keyword.dto';
@@ -44,19 +45,22 @@ export class KeywordsController {
 
   @Get(':id')
   @RoleAccess(`${prefix}.findOne`)
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.keywordsService.findOne(id);
   }
 
   @Patch(':id')
   @RoleAccess(`${prefix}.update`)
-  update(@Param('id') id: string, @Body() updateKeywordDto: UpdateKeywordDto) {
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateKeywordDto: UpdateKeywordDto,
+  ) {
     return this.keywordsService.update(id, updateKeywordDto);
   }
 
   @Delete(':id')
   @RoleAccess(`${prefix}.delete`)
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.keywordsService.remove(id);
   }
 }

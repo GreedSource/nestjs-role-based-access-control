@@ -10,7 +10,7 @@ export const Permissions: Partial<Permission>[] = [
     slug: `${prefix}.find`,
   },
   {
-    slug: `${prefix}.findAll`,
+    slug: `${prefix}.findOnes`,
   },
   {
     slug: `${prefix}.update`,

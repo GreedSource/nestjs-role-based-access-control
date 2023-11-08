@@ -11,8 +11,10 @@ async function bootstrap() {
   app.enableCors();
   if (process.env.NODE_ENV === 'development') {
     const config = new DocumentBuilder()
-      .setTitle('Access Control API Project')
-      .setDescription('An API for testing Access Control with passport and JWT')
+      .setTitle('NestJs Role Based Access Control API Project')
+      .setDescription(
+        'An API for testing Role Based Access Control with passport and JWT',
+      )
       .setVersion('1.0')
       .addBearerAuth(
         {

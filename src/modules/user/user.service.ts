@@ -6,18 +6,16 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from '@dto/users/create-user.dto';
 import { UpdateUserDto } from '@dto/users/update-user.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '@entities/user.entity';
-import { Repository } from 'typeorm';
 import { CloudinaryFolder } from '@enum/cloudinary-folder.enum';
 import { CloudinaryService } from '@modules/cloudinary/cloudinary.service';
 import { File } from '@entities/file.entity';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User)
-    private readonly repository: Repository<User>,
+    private readonly repository: UserRepository,
     private readonly cloudinaryService: CloudinaryService,
   ) {}
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -78,7 +76,7 @@ export class UserService {
         }),
     });
 
-    if(updateUserDto.image){
+    if (updateUserDto.image) {
       const previousImage = await this.findOne(id);
       await this.handleImageChange(previousImage);
     }
@@ -100,6 +98,6 @@ export class UserService {
   }
 
   async findByEmail(email: string): Promise<User> {
-    return await this.repository.findOneBy({ email });
+    return await this.repository.findByEmail(email);
   }
 }

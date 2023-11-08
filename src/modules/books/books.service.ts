@@ -2,17 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { CreateBookDto } from '@dto/books/create-book.dto';
 import { UpdateBookDto } from '@dto/books/update-book.dto';
 import { Book } from '@entities/book.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { CloudinaryService } from '@modules/cloudinary/cloudinary.service';
 import { CloudinaryFolder } from '@enum/cloudinary-folder.enum';
 import { File } from '@entities/file.entity';
+import { BookRepository } from './books.repository';
 
 @Injectable()
 export class BooksService {
   constructor(
-    @InjectRepository(Book)
-    private readonly repository: Repository<Book>,
+    private readonly repository: BookRepository,
     private readonly cloudinaryService: CloudinaryService,
   ) {}
   async create(createBookDto: CreateBookDto) {
