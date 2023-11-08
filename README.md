@@ -56,6 +56,33 @@ $ docker-compose build
 $ docker-compose up -d
 ```
 
+## Migrations
+
+```bash
+# create migration
+$ yarn migration name-of-the-migration
+
+# run migrations
+$ yarn migration:run
+
+# revert last migration
+$ yarn migration:revert
+```
+
+## Run Seeders
+
+```bash
+# run seeds
+$ yarn db:seed
+```
+
+## Generate secret
+
+```bash
+# generate secret
+$ yarn generate:secret
+```
+
 ## Test
 
 ```bash
