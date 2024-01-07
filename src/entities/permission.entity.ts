@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Role } from './role.entity';
 import { DateAudit } from './date-audit.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity('permissions')
 export class Permission {
@@ -17,6 +18,8 @@ export class Permission {
     unique: true,
   })
   slug: string;
+
+  @Exclude()
   @Column(() => DateAudit)
   audit: DateAudit;
 

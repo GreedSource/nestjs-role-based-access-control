@@ -11,6 +11,7 @@ import { DateAudit } from './date-audit.entity';
 import { Permission } from './permission.entity';
 import { User } from './user.entity';
 import * as slug from 'slug';
+import { Exclude } from 'class-transformer';
 
 @Entity('roles')
 export class Role {
@@ -27,6 +28,7 @@ export class Role {
   })
   slug: string;
 
+  @Exclude()
   @Column(() => DateAudit)
   audit: DateAudit;
 
