@@ -3,9 +3,7 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 import { SeederOptions } from 'typeorm-extension';
 import { MainSeeder } from '../database/main.seed';
 
-ConfigModule.forRoot({
-  envFilePath: '.env',
-});
+ConfigModule.forRoot();
 
 const options: DataSourceOptions & SeederOptions = {
   type: 'postgres',

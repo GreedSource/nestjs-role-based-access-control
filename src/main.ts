@@ -22,6 +22,6 @@ async function bootstrap() {
     }),
   );
   await app.listen(process.env.NODE_PORT || 3000);
-  Logger.log(`${await app.getUrl()}`, 'Running at');
+  Logger.log(`${await app.getUrl()}/docs`, 'Swagger running at');
 }
 bootstrap();
