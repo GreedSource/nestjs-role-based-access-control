@@ -19,4 +19,4 @@ RUN yarn build
 EXPOSE 3337
 
 # Start the server using the production build
-CMD [ "yarn", "start" ]
+CMD yarn migration:run ; yarn start:prod
