@@ -8,7 +8,7 @@ import {
   IsNumber,
 } from 'class-validator';
 import { User } from '@entities/user.entity';
-import { Transform, Type, plainToClass } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { UuidRelationshipDto } from '@dto/common/uuid-relashinship.dto';
 import { JsonTransfom } from '@utils/data-transfom.utils';
 export class CreateBookDto {
