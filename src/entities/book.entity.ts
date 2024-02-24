@@ -13,6 +13,7 @@ import { User } from './user.entity';
 import { DateAudit } from './date-audit.entity';
 import { File } from './file.entity';
 import { NumericColumnTransformer } from 'src/transformers/numeric-column.transformer';
+import { Exclude } from 'class-transformer';
 
 export type BookDocument = Book & Document;
 
@@ -46,6 +47,7 @@ export class Book {
   @Column()
   pages: number;
 
+  @Exclude()
   @Column(() => DateAudit)
   audit: DateAudit;
 

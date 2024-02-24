@@ -46,6 +46,7 @@ export class User {
   })
   role: Role;
 
+  @Exclude()
   @Column(() => DateAudit)
   audit: DateAudit;
 

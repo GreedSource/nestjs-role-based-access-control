@@ -9,6 +9,7 @@ import {
 import { Book } from './book.entity';
 import { User } from './user.entity';
 import { DateAudit } from './date-audit.entity';
+import { Exclude } from 'class-transformer';
 @Entity('keywords')
 export class Keyword {
   @PrimaryGeneratedColumn('uuid')
@@ -26,6 +27,7 @@ export class Keyword {
   })
   createdBy: User;
 
+  @Exclude()
   @Column(() => DateAudit)
   audit: DateAudit;
 }
