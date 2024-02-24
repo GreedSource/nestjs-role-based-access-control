@@ -32,8 +32,6 @@ import { MeModule } from './modules/me/me.module';
     RoleModule,
     MeModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
