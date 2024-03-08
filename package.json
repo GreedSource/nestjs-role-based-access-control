@@ -23,9 +23,13 @@
     "migration:run": "yarn typeorm migration:run",
     "migration:show": "yarn typeorm migration:show",
     "migration:revert": "yarn typeorm migration:revert",
-    "db:seed": "ts-node -r tsconfig-paths/register node_modules/typeorm-extension/bin/cli.cjs seed:run -d config/typeorm.config.ts",
+    "seed:run": "ts-node -r tsconfig-paths/register node_modules/typeorm-extension/bin/cli.cjs seed:run -d config/typeorm.config.ts",
+    "seed:class": "ts-node -r tsconfig-paths/register node_modules/typeorm-extension/bin/cli.cjs seed:run -d config/typeorm.config.ts --name ",
     "generate:secret": "node -e \"console.log(require('crypto').randomBytes(256).toString('base64'));\""
   },
+  "pre-commit": [
+    "lint"
+  ],
   "engines": {
     "node": ">=20.0.0",
     "npm": "please-use-yarn"

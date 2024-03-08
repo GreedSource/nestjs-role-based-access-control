@@ -31,7 +31,7 @@ export class UserService {
             publicId: result?.public_id,
           };
         })
-        .catch((e) => {
+        .catch(() => {
           return undefined;
         }),
     });
@@ -71,7 +71,7 @@ export class UserService {
             publicId: result?.public_id,
           };
         })
-        .catch((e) => {
+        .catch(() => {
           return undefined;
         }),
     });
