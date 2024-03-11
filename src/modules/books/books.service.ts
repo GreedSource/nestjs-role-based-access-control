@@ -26,7 +26,7 @@ export class BooksService {
             publicId: result?.public_id,
           };
         })
-        .catch((e) => {
+        .catch(() => {
           return undefined;
         }),
     });
@@ -60,7 +60,7 @@ export class BooksService {
             publicId: result?.public_id,
           };
         })
-        .catch((e) => {
+        .catch(() => {
           return undefined;
         }),
     });

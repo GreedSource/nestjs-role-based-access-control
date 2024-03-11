@@ -27,6 +27,9 @@
     "seed:class": "node node_modules/typeorm-extension/bin/cli.cjs seed:run -d dist/config/typeorm.config.js --name ",
     "generate:secret": "node -e \"console.log(require('crypto').randomBytes(256).toString('base64'));\""
   },
+  "pre-commit": [
+    "lint"
+  ],
   "engines": {
     "node": ">=20.0.0",
     "npm": "please-use-yarn"
