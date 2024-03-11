@@ -1,13 +1,10 @@
-import { Role } from '../../../src/entities/role.entity';
+import { Role } from '@entities/role.entity';
 import { DataSource } from 'typeorm';
-import { Seeder, SeederFactoryManager } from 'typeorm-extension';
+import { Seeder } from 'typeorm-extension';
 import RolesData from './role.data';
 
 export default class RoleSeeder implements Seeder {
-  public async run(
-    dataSource: DataSource,
-    factoryManager: SeederFactoryManager,
-  ): Promise<any> {
+  public async run(dataSource: DataSource): Promise<any> {
     const repository = await dataSource.getRepository(Role);
 
     const entities = await repository.create(RolesData);

@@ -18,12 +18,13 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d ./config/typeorm.config.ts",
-    "migration": "cd ./database/migrations && typeorm migration:create",
+    "typeorm": "node ./node_modules/typeorm/cli.js -d ./dist/config/typeorm.config.js",
+    "migration": "cd ./src/database/migrations && typeorm migration:create",
     "migration:run": "yarn typeorm migration:run",
     "migration:show": "yarn typeorm migration:show",
     "migration:revert": "yarn typeorm migration:revert",
-    "db:seed": "ts-node -r tsconfig-paths/register node_modules/typeorm-extension/bin/cli.cjs seed:run -d config/typeorm.config.ts",
+    "seed:run": "node node_modules/typeorm-extension/bin/cli.cjs seed:run -d dist/config/typeorm.config.js",
+    "seed:class": "node node_modules/typeorm-extension/bin/cli.cjs seed:run -d dist/config/typeorm.config.js --name ",
     "generate:secret": "node -e \"console.log(require('crypto').randomBytes(256).toString('base64'));\""
   },
   "engines": {

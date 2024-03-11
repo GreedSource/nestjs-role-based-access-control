@@ -1,4 +1,4 @@
-import { Role } from '../../../src/entities/role.entity';
+import { Role } from '@entities/role.entity';
 
 export const Roles: Partial<Role>[] = [
   {

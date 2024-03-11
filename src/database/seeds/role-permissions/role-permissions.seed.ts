@@ -1,13 +1,10 @@
-import { Permission } from '../../../src/entities/permission.entity';
-import { Role } from '../../../src/entities/role.entity';
+import { Permission } from '@entities/permission.entity';
+import { Role } from '@entities/role.entity';
 import { DataSource } from 'typeorm';
-import { Seeder, SeederFactoryManager } from 'typeorm-extension';
+import { Seeder } from 'typeorm-extension';
 
 export default class RolePermissionsSeeder implements Seeder {
-  public async run(
-    dataSource: DataSource,
-    factoryManager: SeederFactoryManager,
-  ): Promise<any> {
+  public async run(dataSource: DataSource): Promise<any> {
     const repository = await dataSource.getRepository(Role);
     const entity = await repository.findOneBy({ id: 1 });
     if (entity) {

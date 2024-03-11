@@ -1,6 +1,6 @@
-import { Permission } from '../../../../src/entities/permission.entity';
+import { Permission } from '@entities/permission.entity';
 
-const prefix = 'users';
+const prefix = 'books';
 
 export const Permissions: Partial<Permission>[] = [
   {

@@ -1,6 +1,6 @@
-import { Permission } from '../../../../src/entities/permission.entity';
+import { Permission } from '@entities/permission.entity';
 
-const prefix = 'keywords';
+const prefix = 'roles';
 
 export const Permissions: Partial<Permission>[] = [
   {
@@ -10,7 +10,7 @@ export const Permissions: Partial<Permission>[] = [
     slug: `${prefix}.find`,
   },
   {
-    slug: `${prefix}.findOnes`,
+    slug: `${prefix}.findOne`,
   },
   {
     slug: `${prefix}.update`,
