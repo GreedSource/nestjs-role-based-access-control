@@ -53,7 +53,7 @@ $ yarn run start:prod
 $ docker-compose build
 
 # docker run image
-$ docker-compose up -d
+$ docker-compose up -d --build
 ```
 
 ## Migrations

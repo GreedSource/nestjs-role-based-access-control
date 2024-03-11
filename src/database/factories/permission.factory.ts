@@ -1,4 +1,4 @@
-import { Permission } from '../../src/entities/permission.entity';
+import { Permission } from '@entities/permission.entity';
 import { Faker } from '@faker-js/faker';
 import { setSeederFactory } from 'typeorm-extension';
 

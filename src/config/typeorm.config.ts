@@ -12,12 +12,12 @@ const options: DataSourceOptions & SeederOptions = {
   username: process.env.TYPEORM_DB_USER,
   password: process.env.TYPEORM_DB_PASSWORD,
   database: process.env.TYPEORM_DB_DATABASE,
-  entities: [`${__dirname}/../src/entities/*.entity.ts`],
+  entities: [`${__dirname}/../entities/*.entity.ts`],
   logging: JSON.parse(process.env.TYPEORM_LOGGING) ?? false,
   synchronize: false,
   seeds: [MainSeeder],
   migrationsTableName: 'migrations',
-  migrations: [`${__dirname}/../database/migrations/*.ts`],
+  migrations: [`${__dirname}/../database/migrations/*.{js,ts}`],
 };
 
 export const dataSource = new DataSource(options);

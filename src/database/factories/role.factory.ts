@@ -1,4 +1,4 @@
-import { Role } from '../../src/entities/role.entity';
+import { Role } from '@entities/role.entity';
 import { Faker } from '@faker-js/faker';
 import { setSeederFactory } from 'typeorm-extension';
 
