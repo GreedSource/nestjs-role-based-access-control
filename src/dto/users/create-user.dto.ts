@@ -1,6 +1,5 @@
 import { Match } from '@decorators/match.decorator';
 import { IdRelationship } from '@dto/common/id-relashinship.dto';
-import { Role } from '@entities/role.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {

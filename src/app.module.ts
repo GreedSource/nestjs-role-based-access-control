@@ -12,7 +12,9 @@ import { MeModule } from './modules/me/me.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      expandVariables: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.TYPEORM_DB_HOST,

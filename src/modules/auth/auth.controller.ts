@@ -16,7 +16,6 @@ import {
 } from '@nestjs/common';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UserService } from '@modules/user/user.service';
 import { RegisterUserDto } from '@dto/users/register-user.dto';
 import { RefreshJwtGuard } from '@guards/refresh-jwt-auth.guard';
 import { LocalAuthGuard } from '@guards/local-auth.guard';
@@ -36,6 +35,7 @@ export class AuthController {
   async login(
     @Request() req,
     @Res({ passthrough: true }) res,
+    // eslint-disable-next-line
     @Body() validateUserDto: ValidateUserDto,
   ) {
     const response = await this.authService.login(req.user);
@@ -55,6 +55,7 @@ export class AuthController {
 
   @Get('google')
   @UseGuards(GoogleOauthGuard)
+  //eslint-disable-next-line
   async googleOauth() {}
 
   @Get('google/callback')

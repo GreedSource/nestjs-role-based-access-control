@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   app:
-    container_name: nestjs-role-based-access-control
+    container_name: rbac-app
     restart: unless-stopped
     build:
       context: .
