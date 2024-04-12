@@ -56,6 +56,7 @@ export class AuthController {
   @Get('google')
   @UseGuards(GoogleOauthGuard)
   //eslint-disable-next-line
+  //eslint-disable-next-line
   async googleOauth() {}
 
   @Get('google/callback')
