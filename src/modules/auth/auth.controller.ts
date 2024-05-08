@@ -6,7 +6,6 @@ import {
   UseGuards,
   Body,
   UseInterceptors,
-  ClassSerializerInterceptor,
   UploadedFile,
   Res,
   HttpStatus,
@@ -26,7 +25,6 @@ import { GoogleOauthGuard } from '@guards/google-oauth.guard';
 
 @Controller('auth')
 @ApiTags('auth')
-@UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

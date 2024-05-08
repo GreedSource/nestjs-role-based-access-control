@@ -1,6 +1,5 @@
 import {
   Body,
-  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -25,7 +24,6 @@ const prefix = 'roles';
 @ApiTags(prefix)
 @UseGuards(JwtGuard, RoleBasedAccessControlGuard)
 @ApiBearerAuth('access-token')
-@UseInterceptors(ClassSerializerInterceptor)
 export class RoleController {
   constructor(private readonly service: RoleService) {}
 

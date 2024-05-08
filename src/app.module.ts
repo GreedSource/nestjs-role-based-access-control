@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+} from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '@modules/auth/auth.module';
@@ -9,6 +14,7 @@ import { UserModule } from '@modules/user/user.module';
 import { AppLoggerMiddleware } from './middleware/app-logger.middleware';
 import { RoleModule } from './modules/role/role.module';
 import { MeModule } from './modules/me/me.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -33,6 +39,9 @@ import { MeModule } from './modules/me/me.module';
     UserModule,
     RoleModule,
     MeModule,
+  ],
+  providers: [
+    { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
   ],
 })
 export class AppModule implements NestModule {
