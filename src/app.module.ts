@@ -17,6 +17,7 @@ import { MeModule } from './modules/me/me.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { CacheModule } from '@nestjs/cache-manager';
 import * as redisStore from 'cache-manager-redis-store';
+import * as fs from 'fs';
 
 @Module({
   imports: [
@@ -33,6 +34,11 @@ import * as redisStore from 'cache-manager-redis-store';
       entities: ['dist/entities/*.entity{.js,.ts}'],
       synchronize: JSON.parse(process.env.TYPEORM_DB_SYNC ?? 'false'),
       logging: JSON.parse(process.env.TYPEORM_LOGGING ?? 'false'),
+      ssl: JSON.parse(process.env.TYPEORM_LOGGING)
+        ? {
+            ca: fs.readFileSync(process.env.TYPEORM_CA_CERT),
+          }
+        : undefined,
     }),
     CacheModule.register({
       isGlobal: true,
