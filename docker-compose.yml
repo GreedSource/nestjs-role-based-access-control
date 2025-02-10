@@ -1,12 +1,14 @@
-version: '3.8'
+name: rbac
+
 services:
-  app:
-    container_name: nestjs-role-based-access-control
+  backend:
+    image: rbac-image
+    container_name: rbac-app
     restart: unless-stopped
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "${NODE_PORT}:${NODE_PORT}"
+      - '${NODE_PORT}:${NODE_PORT}'
     env_file:
       - .env

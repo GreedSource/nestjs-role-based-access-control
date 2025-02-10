@@ -8,7 +8,6 @@ import {
   Delete,
   UseGuards,
   UseInterceptors,
-  ClassSerializerInterceptor,
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { KeywordsService } from './keywords.service';
@@ -26,7 +25,6 @@ const prefix = 'keywords';
 @ApiTags(prefix)
 @UseGuards(JwtGuard, RoleBasedAccessControlGuard)
 @ApiBearerAuth('access-token')
-@UseInterceptors(ClassSerializerInterceptor)
 export class KeywordsController {
   constructor(private readonly keywordsService: KeywordsService) {}
 

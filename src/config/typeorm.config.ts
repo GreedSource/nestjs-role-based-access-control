@@ -2,6 +2,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { SeederOptions } from 'typeorm-extension';
 import { MainSeeder } from '../database/main.seed';
+import * as fs from 'fs';
 
 ConfigModule.forRoot();
 
@@ -18,6 +19,11 @@ const options: DataSourceOptions & SeederOptions = {
   seeds: [MainSeeder],
   migrationsTableName: 'migrations',
   migrations: [`${__dirname}/../database/migrations/*.{js,ts}`],
+  ssl: process.env.TYPEORM_CA_CERT
+    ? {
+        ca: fs.readFileSync(process.env.TYPEORM_CA_CERT),
+      }
+    : undefined,
 };
 
 export const dataSource = new DataSource(options);

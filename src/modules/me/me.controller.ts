@@ -1,10 +1,8 @@
 import { JwtGuard } from '@guards/jwt-auth.guard';
 import {
-  ClassSerializerInterceptor,
   Controller,
   Get,
   UseGuards,
-  UseInterceptors,
   Req,
   Patch,
   Body,
@@ -19,7 +17,6 @@ import { ChangePasswordDto } from '@dto/me/change-password.dto';
 @ApiTags('Me')
 @UseGuards(JwtGuard)
 @ApiBearerAuth('access-token')
-@UseInterceptors(ClassSerializerInterceptor)
 export class MeController {
   constructor(private readonly service: MeService) {}
 

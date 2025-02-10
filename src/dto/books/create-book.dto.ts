@@ -38,7 +38,7 @@ export class CreateBookDto {
   @IsInt()
   readonly pages: number;
 
-  @ApiProperty({ example: 64 })
+  @ApiProperty({ example: 99.99 })
   @Transform(({ value }) => {
     return parseFloat(value);
   })
@@ -47,10 +47,16 @@ export class CreateBookDto {
   })
   readonly price: number;
 
-  @ApiProperty({ example: [{ id: '4ca8b463-1cc7-4b8c-b915-344010306272' }] })
-  @Transform((params) => JsonTransfom(params, UuidRelationshipDto))
+  @ApiProperty({
+    example: [{ id: '4ca8b463-1cc7-4b8c-b915-344010306272' }],
+    required: false,
+  })
+  @Transform((params) =>
+    params.value ? JsonTransfom(params, UuidRelationshipDto) : null,
+  )
   @ValidateNested({ each: true })
   @Type(() => UuidRelationshipDto)
+  @IsOptional()
   readonly keywords: UuidRelationshipDto[];
 
   @IsOptional()

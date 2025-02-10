@@ -9,8 +9,8 @@ import { UpdateUserDto } from '@dto/users/update-user.dto';
 import { User } from '@entities/user.entity';
 import { CloudinaryFolder } from '@enum/cloudinary-folder.enum';
 import { CloudinaryService } from '@modules/cloudinary/cloudinary.service';
-import { File } from '@entities/file.entity';
 import { UserRepository } from './user.repository';
+import { CloudinaryMetadataUtil } from '@utils/cloudinary-metadata.utils';
 
 @Injectable()
 export class UserService {
@@ -23,14 +23,7 @@ export class UserService {
       ...createUserDto,
       avatar: await this.cloudinaryService
         .uploadFile(createUserDto.image, CloudinaryFolder.Profile)
-        .then((result) => {
-          return <File>{
-            path: result?.secure_url,
-            format: result?.format,
-            filesize: result?.bytes,
-            publicId: result?.public_id,
-          };
-        })
+        .then(CloudinaryMetadataUtil)
         .catch(() => {
           return undefined;
         }),
@@ -63,14 +56,7 @@ export class UserService {
       ...updateUserDto,
       avatar: await this.cloudinaryService
         .uploadFile(updateUserDto.image, CloudinaryFolder.Profile)
-        .then((result) => {
-          return <File>{
-            path: result?.secure_url,
-            format: result?.format,
-            filesize: result?.bytes,
-            publicId: result?.public_id,
-          };
-        })
+        .then(CloudinaryMetadataUtil)
         .catch(() => {
           return undefined;
         }),

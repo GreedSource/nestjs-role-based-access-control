@@ -8,7 +8,6 @@ import {
   Delete,
   UseGuards,
   UseInterceptors,
-  ClassSerializerInterceptor,
   UploadedFile,
   HttpStatus,
   ParseUUIDPipe,
@@ -18,8 +17,6 @@ import { CreateUserDto } from '@dto/users/create-user.dto';
 import { UpdateUserDto } from '@dto/users/update-user.dto';
 import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '@guards/jwt-auth.guard';
-// import { Roles } from '@decorators/role.decorator';
-// import { Role } from '@enum/role.enum';
 import { RoleBasedAccessControlGuard } from '@guards/role-based-access-control.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ResponseDto } from '@dto/common/response.dto';
@@ -33,7 +30,6 @@ const prefix = 'users';
 @ApiTags(prefix)
 @UseGuards(JwtGuard, RoleBasedAccessControlGuard)
 @ApiBearerAuth('access-token')
-@UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

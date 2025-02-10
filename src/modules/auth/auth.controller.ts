@@ -6,7 +6,6 @@ import {
   UseGuards,
   Body,
   UseInterceptors,
-  ClassSerializerInterceptor,
   UploadedFile,
   Res,
   HttpStatus,
@@ -26,7 +25,6 @@ import { GoogleOauthGuard } from '@guards/google-oauth.guard';
 
 @Controller('auth')
 @ApiTags('auth')
-@UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -35,7 +33,7 @@ export class AuthController {
   async login(
     @Request() req,
     @Res({ passthrough: true }) res,
-    //eslint-disable-next-line
+    // eslint-disable-next-line
     @Body() validateUserDto: ValidateUserDto,
   ) {
     const response = await this.authService.login(req.user);
@@ -55,6 +53,7 @@ export class AuthController {
 
   @Get('google')
   @UseGuards(GoogleOauthGuard)
+  //eslint-disable-next-line
   //eslint-disable-next-line
   async googleOauth() {}
 

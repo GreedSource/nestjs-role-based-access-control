@@ -4,8 +4,8 @@ import { UpdateBookDto } from '@dto/books/update-book.dto';
 import { Book } from '@entities/book.entity';
 import { CloudinaryService } from '@modules/cloudinary/cloudinary.service';
 import { CloudinaryFolder } from '@enum/cloudinary-folder.enum';
-import { File } from '@entities/file.entity';
 import { BookRepository } from './books.repository';
+import { CloudinaryMetadataUtil } from '@utils/cloudinary-metadata.utils';
 
 @Injectable()
 export class BooksService {
@@ -18,14 +18,7 @@ export class BooksService {
       ...createBookDto,
       cover: await this.cloudinaryService
         .uploadFile(createBookDto.image, CloudinaryFolder.Book)
-        .then((result) => {
-          return <File>{
-            path: result?.secure_url,
-            format: result?.format,
-            filesize: result?.bytes,
-            publicId: result?.public_id,
-          };
-        })
+        .then(CloudinaryMetadataUtil)
         .catch(() => {
           return undefined;
         }),
@@ -52,14 +45,7 @@ export class BooksService {
       ...updateBookDto,
       cover: await this.cloudinaryService
         .uploadFile(updateBookDto.image, CloudinaryFolder.Book)
-        .then((result) => {
-          return <File>{
-            path: result?.secure_url,
-            format: result?.format,
-            filesize: result?.bytes,
-            publicId: result?.public_id,
-          };
-        })
+        .then(CloudinaryMetadataUtil)
         .catch(() => {
           return undefined;
         }),

@@ -8,7 +8,6 @@ import {
   Delete,
   UseGuards,
   UseInterceptors,
-  ClassSerializerInterceptor,
   UploadedFile,
   ParseUUIDPipe,
 } from '@nestjs/common';
@@ -28,7 +27,6 @@ const prefix = 'books';
 @ApiTags(prefix)
 @UseGuards(JwtGuard, RoleBasedAccessControlGuard)
 @ApiBearerAuth('access-token')
-@UseInterceptors(ClassSerializerInterceptor)
 export class BooksController {
   constructor(private readonly service: BooksService) {}
 
