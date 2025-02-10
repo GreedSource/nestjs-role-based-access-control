@@ -11,7 +11,7 @@ export class PythonService {
   private shell: PythonShell;
 
   constructor() {
-    this.shell = new PythonShell('test.py', config);
+    this.shell = new PythonShell('shell.py', config);
     this.startup();
   }
 
