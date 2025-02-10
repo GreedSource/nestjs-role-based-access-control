@@ -48,14 +48,28 @@ USER node
 
 FROM node:20.5-alpine3.17  As production
 # Expose the port your NestJS app is running on
+
+# Install Python for running shell scripts
+RUN apk add --no-cache python3 py3-pip
+
+# Copy Python requirements and install Python dependencies
+COPY --chown=node:node --from=build /usr/src/app/requirements.txt ./requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
+
 EXPOSE 3337
 WORKDIR /usr/src/app
 
 # Copy the bundled code from the build stage to the production image
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
+COPY --chown=node:node --from=build /usr/src/app/scripts ./scripts
+COPY --chown=node:node --from=build /usr/src/app/certs ./certs
 COPY --chown=node:node package.json ./
 COPY --chown=node:node tsconfig.json ./
+
+# Ensure Python scripts in the 'scripts' folder are executable.
+RUN if [ -d "scripts" ]; then chmod +x scripts/*.py; else echo "No scripts directory found, skipping chmod"; fi
+
 
 # Start the server using the production build
 CMD yarn migration:show ; yarn migration:run ; yarn start:prod

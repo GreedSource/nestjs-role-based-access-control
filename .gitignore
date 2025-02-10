@@ -2,6 +2,9 @@
 /dist
 /node_modules
 
+__pycache__/
+**/__pycache__/
+
 # Logs
 logs
 *.log
@@ -10,7 +13,7 @@ pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
-config/
+certs/
 
 # OS
 .DS_Store

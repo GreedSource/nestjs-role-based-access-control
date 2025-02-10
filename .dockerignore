@@ -5,3 +5,7 @@ Dockerfile
 node_modules
 dist
 npm-debug.log
+
+# Ignore __pycache__ directories to avoid copying them into your Docker image
+__pycache__/
+**/__pycache__/

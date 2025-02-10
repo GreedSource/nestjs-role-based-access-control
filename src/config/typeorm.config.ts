@@ -19,7 +19,7 @@ const options: DataSourceOptions & SeederOptions = {
   seeds: [MainSeeder],
   migrationsTableName: 'migrations',
   migrations: [`${__dirname}/../database/migrations/*.{js,ts}`],
-  ssl: JSON.parse(process.env.TYPEORM_LOGGING)
+  ssl: process.env.TYPEORM_CA_CERT
     ? {
         ca: fs.readFileSync(process.env.TYPEORM_CA_CERT),
       }
