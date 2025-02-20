@@ -18,7 +18,7 @@ def process_data(data):
 
     # Create a nested dictionary using 'column' as the outer key and (column, row) as inner keys
     nested_dict = (
-        df.set_index(["column", "row"])
+        df.set_index(["row", "column"])
         .groupby(level=0)
         .apply(lambda d: {str(k[1]): v for k, v in d.to_dict(orient="index").items()})
         .to_dict()

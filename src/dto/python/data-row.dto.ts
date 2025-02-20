@@ -28,4 +28,10 @@ export class DataRowDto {
   })
   @IsString()
   type: string;
+
+  @ApiProperty({
+    example: 'text',
+  })
+  @IsString()
+  extra: string;
 }
