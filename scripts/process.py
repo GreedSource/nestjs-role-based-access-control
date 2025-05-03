@@ -8,9 +8,9 @@ def process_data(data):
     df = pd.DataFrame(data)
 
     # Debug: Print the original DataFrame and its columns
-    print("\n🔹 Original DataFrame:", file=sys.stderr)
-    print(df, file=sys.stderr)
-    print("\n🔹 DataFrame Columns:", df.columns.tolist(), file=sys.stderr)
+    # print("\n🔹 Original DataFrame:", file=sys.stderr)
+    # print(df, file=sys.stderr)
+    # print("\n🔹 DataFrame Columns:", df.columns.tolist(), file=sys.stderr)
 
     # Ensure the expected columns exist
     if "column" not in df.columns or "row" not in df.columns:

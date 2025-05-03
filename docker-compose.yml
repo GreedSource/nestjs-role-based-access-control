@@ -12,3 +12,10 @@ services:
       - '${NODE_PORT}:${NODE_PORT}'
     env_file:
       - .env
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: '4GB'
+    mem_limit: '4g'
+    cpus: '1.0'

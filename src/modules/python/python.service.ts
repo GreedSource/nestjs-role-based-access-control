@@ -25,7 +25,7 @@ export class PythonService {
 
       // ✅ Listen for Python's response
       this.shell.on('message', (message) => {
-        this.logger.log(`📩 Received from Python: ${JSON.stringify(message)}`);
+        // this.logger.log(`📩 Received from Python: ${JSON.stringify(message)}`);
         resolve(message);
       });
 
